@@ -73,7 +73,7 @@ Use `-RevitApiDir` when Revit is installed somewhere other than `C:\Program File
 
 1. Close Revit.
 2. Extract the package produced under `artifacts`.
-3. Run `installer/install.ps1` from the extracted package.
+3. Run `install.ps1` from the extracted package.
 4. Start Revit and open a project.
 5. Confirm that the **Revit AI Bridge** add-in loaded.
 
