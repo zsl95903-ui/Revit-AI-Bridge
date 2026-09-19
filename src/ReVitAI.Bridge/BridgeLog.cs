@@ -1,15 +1,15 @@
 using System.Text;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal static class BridgeLog
 {
     private static readonly object Sync = new();
     private static readonly string LogPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "RevitAi",
+        "ReVitAI",
         "logs",
-        "codex-batch.log");
+        "revitai-bridge.log");
 
     public static void Write(string message)
     {

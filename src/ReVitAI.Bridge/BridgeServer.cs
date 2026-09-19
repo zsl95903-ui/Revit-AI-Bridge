@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal sealed class BridgeServer : IAsyncDisposable
 {
@@ -22,15 +22,15 @@ internal sealed class BridgeServer : IAsyncDisposable
     {
         _dispatcher = dispatcher;
         _invoker = new ExternalEventInvoker(dispatcher);
-        PipeName = $"RevitAiBatch.{Environment.ProcessId}.{Guid.NewGuid():N}";
+        PipeName = $"ReVitAI.Bridge.{Environment.ProcessId}.{Guid.NewGuid():N}";
         _instanceDiscoveryPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "RevitAi",
-            $"codex-bridge.{Environment.ProcessId}.json");
+            "ReVitAI",
+            $"revitai-bridge.{Environment.ProcessId}.json");
         _discoveryPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "RevitAi",
-            "codex-bridge.json");
+            "ReVitAI",
+            "revitai-bridge.json");
     }
 
     public string PipeName { get; }
@@ -356,7 +356,7 @@ internal sealed class BridgeServer : IAsyncDisposable
             Type = "agent.chat",
             RequestId = requestId,
             Success = true,
-            FinalText = "复杂绘图任务不交给内置绘制 AI。请由 Codex 生成结构化 drawing plan，并调用 apply_drawing_plan 一次提交。",
+            FinalText = "复杂绘图任务请生成结构化 drawing plan，并调用 apply_drawing_plan 一次提交。",
             Tool = (string?)null,
             Payload = (object?)null,
             DurationMs = stopwatch.Elapsed.TotalMilliseconds,
@@ -376,15 +376,15 @@ internal sealed class BridgeServer : IAsyncDisposable
             {
                 Configured = false,
                 ToolsReady = true,
-                Model = "deterministic-codex-batch",
+                Model = "deterministic-revitai-bridge",
                 HistoryMessages = 0,
                 SessionId = Convert.ToHexString(
                     System.Security.Cryptography.RandomNumberGenerator.GetBytes(16)).ToLowerInvariant(),
-                SessionTitle = "Codex Revit Batch Bridge",
+                SessionTitle = "ReVitAI Bridge",
                 Rounds = 0,
-                Build = "v1.0-codex-batch",
+                Build = "v1.4.0",
                 ToolCount = catalog.GetType().GetProperty("Count")!.GetValue(catalog),
-                ToolSets = new[] { "Codex Batch", "2D Drawing", "PDF Underlay", "Annotations" },
+                ToolSets = new[] { "ReVitAI", "2D Drawing", "PDF Underlay", "Annotations" },
                 Tools = catalog.GetType().GetProperty("Tools")!.GetValue(catalog),
             },
             DurationMs = durationMs,
@@ -420,7 +420,7 @@ internal sealed class BridgeServer : IAsyncDisposable
         if (ShouldPreservePrimaryDiscovery())
         {
             BridgeLog.Write(
-                $"Primary Codex discovery is owned by another live Revit process. Instance file: {_instanceDiscoveryPath}");
+                $"Primary ReVitAI discovery is owned by another live Revit process. Instance file: {_instanceDiscoveryPath}");
             return;
         }
 
@@ -436,7 +436,7 @@ internal sealed class BridgeServer : IAsyncDisposable
             ProcessId = Environment.ProcessId,
             StartedAt = DateTimeOffset.UtcNow.ToString("O"),
             UpdatedAt = DateTimeOffset.UtcNow.ToString("O"),
-            Server = "RevitAiBatch",
+            Server = "ReVitAI.Bridge",
             Version = "1.2.0",
             DocumentGuid = _lastDocumentGuid,
             DocumentTitle = _lastDocumentTitle,

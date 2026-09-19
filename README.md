@@ -1,38 +1,39 @@
-# Revit AI Bridge
+# ReVitAI Bridge
 
 Local-first, typed automation bridge for Autodesk Revit 2027.
 
-Revit AI Bridge connects an AI agent, script, or local client to Revit through a user-scoped Named Pipe. Revit API work is marshalled onto the Revit main thread, executed in a transaction, checked by readback, and returned as structured JSON.
+ReVitAI Bridge is the native tool and API layer used by the previously published **Revit-AI-Bridge** Agent workflow. The Agent sends structured JSON requests through a user-scoped Named Pipe; Revit API work is marshalled onto the Revit main thread, executed in a transaction, checked by readback, and returned as structured JSON.
 
-## Highlights
+## Agent Integration
 
-- 47 typed tools for document inspection, modeling, annotation, views, and export.
-- Levels, grids, walls, floors, rooms, doors, windows, columns, beams, and detail creation.
-- Read-only queries for levels, grids, family types, rooms, elements, and geometry.
-- `dryRun`, `batch`, and dependency-aware `apply_drawing_plan`.
-- User-scoped Named Pipe transport with document GUID checks.
+- Designed for the existing Revit-AI-Bridge Agent workflow.
+- Local Named Pipe transport with JSON-line requests.
+- Document identity checks before model operations.
+- Read and write tools with `dryRun` and transaction rollback.
+- `batch` and `apply_drawing_plan` for multi-step work.
 - Millimetre-based public geometry API.
-- Transaction rollback on failure and explicit readback values.
-- Built and verified against Revit 2027.
+- Explicit element IDs and readback values after writes.
 
-## Tool Groups
+## Core Tools
 
-1. Document and context
-2. Levels and grids
-3. Architectural components
-4. Structural components
-5. Rooms and boundaries
-6. Annotation and detail
-7. Views and export
-8. Plans and batching
-9. Families, query, and object management
+The release contains 47 native Revit 2027 tools for:
+
+1. Document and context inspection.
+2. Levels and grids.
+3. Architectural components.
+4. Structural components.
+5. Rooms and boundaries.
+6. Annotation and detail.
+7. Views and export.
+8. Plans and batching.
+9. Families, query, and object management.
 
 The canonical machine-readable catalog is [docs/tool-catalog.json](docs/tool-catalog.json).
 
 ## Architecture
 
 ```text
-AI agent / script
+Revit-AI-Bridge Agent / local client
         |
         v
 Named Pipe client
@@ -75,7 +76,7 @@ Use `-RevitApiDir` when Revit is installed somewhere other than `C:\Program File
 2. Extract the package produced under `artifacts`.
 3. Run `install.ps1` from the extracted package.
 4. Start Revit and open a project.
-5. Confirm that the **Revit AI Bridge** add-in loaded.
+5. Confirm that the **ReVitAI Bridge** add-in loaded.
 
 The installation script copies the add-in and payload into the current user's `%APPDATA%\Autodesk\Revit\Addins\2027` directory.
 
@@ -84,7 +85,7 @@ The installation script copies the add-in and payload into the current user's `%
 The bridge writes a discovery file to:
 
 ```text
-%LOCALAPPDATA%\RevitAi\codex-bridge.json
+%LOCALAPPDATA%\ReVitAI\revitai-bridge.json
 ```
 
 Use the pipe name from that file as the transport for JSON-line requests. Start with `tools.list`, then call `get_document_snapshot`. Review a plan with `dryRun: true` before applying it.
@@ -97,13 +98,13 @@ Use the pipe name from that file as the transport for JSON-line requests. Start 
 - Mutating operations run in Revit transactions.
 - Failed operations roll back.
 - Plan execution can stop on the first error.
-- Warning-level failures can be filtered without hiding errors.
-- Arbitrary code execution is not exposed by the default bridge.
+- Arbitrary code execution is not exposed.
+- The bridge does not persist credentials or sensitive secret values.
 
 ## Repository Layout
 
 ```text
-src/RevitAiBatch
+src/ReVitAI.Bridge
 build
 installer
 docs
@@ -120,10 +121,6 @@ docs
 - [Open-source release plan](docs/open-source-plan.md)
 - [Project overview](docs/project-overview.md)
 
-## Compatibility
-
-The current target is Revit 2027. Older Revit versions require a separate API compatibility pass and are not part of the initial release promise.
-
 ## License
 
-The project source is licensed under Apache-2.0 unless otherwise noted. Third-party components remain under their respective licenses. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [docs/third-party-audit.md](docs/third-party-audit.md).
+The project source is licensed under Apache-2.0 unless otherwise noted. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [docs/third-party-audit.md](docs/third-party-audit.md).

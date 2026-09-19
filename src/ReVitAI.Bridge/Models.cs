@@ -2,7 +2,7 @@ using System.Text.Json;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal sealed class BridgeEnvelope
 {
@@ -16,11 +16,13 @@ internal sealed class BridgeEnvelope
 internal sealed class ToolDefinition
 {
     public required string Name { get; init; }
+    public string Category { get; set; } = "ReVitAI";
     public required string Description { get; init; }
     public required bool Mutating { get; init; }
+    public bool RequiresTransaction { get; set; }
     public required bool RequiresActiveDocument { get; init; }
     public required Func<InvocationContext, object?> Handler { get; init; }
-    public object? InputSchema { get; init; }
+    public object? InputSchema { get; set; }
 }
 
 internal sealed record InvocationContext

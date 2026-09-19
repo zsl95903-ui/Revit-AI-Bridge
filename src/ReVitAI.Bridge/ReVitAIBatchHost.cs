@@ -1,15 +1,15 @@
 using System.Text.Json;
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
-public sealed record CodexBatchToolDescriptor(
+public sealed record ReVitAIToolDescriptor(
     string Name,
     string Description,
     bool Mutating,
     string InputSchemaJson);
 
-public static class CodexBatchHost
+public static class ReVitAIBatchHost
 {
     private static readonly object Sync = new();
     private static ToolDispatcher? _dispatcher;
@@ -46,7 +46,7 @@ public static class CodexBatchHost
         }
     }
 
-    public static IReadOnlyList<CodexBatchToolDescriptor> GetTools()
+    public static IReadOnlyList<ReVitAIToolDescriptor> GetTools()
     {
         lock (Sync)
         {
@@ -70,14 +70,14 @@ public static class CodexBatchHost
         ArgumentNullException.ThrowIfNull(application);
         if (string.IsNullOrWhiteSpace(tool))
         {
-            throw new ArgumentException("A Codex batch tool name is required.", nameof(tool));
+            throw new ArgumentException("A ReVitAI tool name is required.", nameof(tool));
         }
 
         ToolDispatcher dispatcher;
         lock (Sync)
         {
             dispatcher = _dispatcher
-                ?? throw new InvalidOperationException("The Codex batch dispatcher is not running.");
+                ?? throw new InvalidOperationException("The ReVitAI batch dispatcher is not running.");
         }
 
         var command = new PendingCommand

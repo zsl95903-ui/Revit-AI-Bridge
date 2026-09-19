@@ -1,6 +1,6 @@
 using Autodesk.Revit.DB;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal static class Units
 {

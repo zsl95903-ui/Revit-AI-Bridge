@@ -2,11 +2,11 @@ using System.Text.Json;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal sealed partial class ToolDispatcher
 {
-    private const string BatchName = "Codex Revit Batch";
+    private const string BatchName = "ReVitAI Bridge";
     private readonly Dictionary<string, ToolDefinition> _tools;
 
     public ToolDispatcher()
@@ -101,7 +101,8 @@ internal sealed partial class ToolDispatcher
             {
                 tool.Name,
                 tool.Description,
-                ToolSet = "Codex Batch",
+                tool.Category,
+                ToolSet = "ReVitAI",
                 tool.Mutating,
                 tool.RequiresActiveDocument,
                 SupportsDryRun = !tool.Name.Equals("zoom_to_elements", StringComparison.OrdinalIgnoreCase)
@@ -242,11 +243,11 @@ internal sealed partial class ToolDispatcher
         return _tools.TryGetValue(tool, out var definition) && definition.Mutating;
     }
 
-    internal IReadOnlyList<CodexBatchToolDescriptor> DescribeTools()
+    internal IReadOnlyList<ReVitAIToolDescriptor> DescribeTools()
     {
         return _tools.Values
             .OrderBy(tool => tool.Name, StringComparer.OrdinalIgnoreCase)
-            .Select(tool => new CodexBatchToolDescriptor(
+            .Select(tool => new ReVitAIToolDescriptor(
                 tool.Name,
                 tool.Description,
                 tool.Mutating,
@@ -914,7 +915,7 @@ internal sealed partial class ToolDispatcher
                 context.Document,
                 new ElementId(BuiltInCategory.OST_GenericModel));
             shape.SetShape([solid]);
-            shape.SetName(Json.StringAny(item, "name") ?? "Codex 3D Box");
+            shape.SetName(Json.StringAny(item, "name") ?? "ReVitAI 3D Box");
             created.Add(new
             {
                 ElementId = shape.Id.Value,
@@ -1784,7 +1785,7 @@ internal sealed partial class ToolDispatcher
                 Path.GetInvalidFileNameChars().Contains(character) ? '_' : character));
             var defaultDirectory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "RevitAI Models");
+                "ReVitAI Models");
             var defaultPath = Path.Combine(defaultDirectory, safeTitle + ".rvt");
             Directory.CreateDirectory(defaultDirectory);
             SaveDocumentPath(document, defaultPath, overwrite: true);
@@ -1802,7 +1803,7 @@ internal sealed partial class ToolDispatcher
             ? Path.GetFullPath(requestedPath)
             : Path.GetFullPath(Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "RevitAI Models",
+                "ReVitAI Models",
                 requestedPath));
         if (!Path.GetExtension(fullPath).Equals(".rvt", StringComparison.OrdinalIgnoreCase))
         {
@@ -1838,7 +1839,7 @@ internal sealed partial class ToolDispatcher
     private static object Create3DView(InvocationContext context)
     {
         var name = Json.StringAny(context.Arguments, "name", "viewName")
-            ?? "Codex 3D View";
+            ?? "ReVitAI 3D View";
         var view = CreateOrGet3DView(context.Document, name);
         var autoFloorIds = Json.Bool(context.Arguments, "hideFloors", false)
             ? new FilteredElementCollector(context.Document)
@@ -2038,7 +2039,7 @@ internal sealed partial class ToolDispatcher
         {
             outputDirectory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                "RevitAI Batch Exports");
+                "ReVitAI Batch Exports");
         }
 
         Directory.CreateDirectory(outputDirectory);

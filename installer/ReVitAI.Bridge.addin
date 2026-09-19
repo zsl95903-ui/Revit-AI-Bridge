@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
   <AddIn Type="Application">
-    <Name>Revit AI Bridge</Name>
-    <Assembly>RevitAiBatchV1\RevitAiBatch.dll</Assembly>
+    <Name>ReVitAI Bridge</Name>
+    <Assembly>ReVitAIBridgeV1\ReVitAI.Bridge.dll</Assembly>
     <AddInId>4f57d885-6c4f-4edf-a3a9-1e9f5ba5c7e1</AddInId>
-    <FullClassName>RevitAiBatch.RevitAiBatchApplication</FullClassName>
-    <VendorId>CODEX</VendorId>
+    <FullClassName>ReVitAI.Bridge.ReVitAIBridgeApplication</FullClassName>
+    <VendorId>REVITAI</VendorId>
     <VendorDescription>Local typed automation bridge for Autodesk Revit.</VendorDescription>
   </AddIn>
 </RevitAddIns>

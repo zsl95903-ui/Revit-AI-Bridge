@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Text.Json;
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal sealed class ExternalEventInvoker : IExternalEventHandler
 {
@@ -58,5 +58,5 @@ internal sealed class ExternalEventInvoker : IExternalEventHandler
         }
     }
 
-    public string GetName() => "RevitAI Codex Batch External Event";
+    public string GetName() => "ReVitAI Bridge External Event";
 }

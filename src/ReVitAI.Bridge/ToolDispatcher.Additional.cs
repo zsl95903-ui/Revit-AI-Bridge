@@ -3,7 +3,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.DB.Structure;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
 internal sealed partial class ToolDispatcher
 {
@@ -88,7 +88,7 @@ internal sealed partial class ToolDispatcher
         var depthMm = Json.Double(source, "depthMm", Json.Double(source, "depth", 600));
         var heightMm = Json.Double(source, "heightMm", Json.Double(source, "height", 3600));
         var rotation = Json.Double(source, "rotationDegrees", Json.Double(source, "rotation"));
-        var name = Json.StringAny(source, "name", "mark") ?? "Codex Structural Column";
+        var name = Json.StringAny(source, "name", "mark") ?? "ReVitAI Structural Column";
         var familyTypeId = Json.Long(source, "familyTypeId", Json.Long(source, "family_type_id"));
 
         if (familyTypeId > 0
@@ -152,7 +152,7 @@ internal sealed partial class ToolDispatcher
         var level = (Level)context.Document.GetElement(new ElementId(levelId));
         var beamWidthMm = Json.Double(source, "beamWidthMm", Json.Double(source, "widthMm", Json.Double(source, "width", 250)));
         var beamHeightMm = Json.Double(source, "beamHeightMm", Json.Double(source, "heightMm", Json.Double(source, "height", 600)));
-        var name = Json.StringAny(source, "name", "mark") ?? "Codex Structural Beam";
+        var name = Json.StringAny(source, "name", "mark") ?? "ReVitAI Structural Beam";
         var familyTypeId = Json.Long(source, "familyTypeId", Json.Long(source, "family_type_id"));
 
         if (familyTypeId > 0

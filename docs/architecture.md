@@ -3,7 +3,7 @@
 ## Data Flow
 
 ```text
-Local client / AI tool
+Revit-AI-Bridge Agent / local client
         |
         v
 Named Pipe request
@@ -30,9 +30,9 @@ ToolDispatcher
 
 - `BridgeServer`: owns the named pipe, discovery file and request loop.
 - `ExternalEventInvoker`: queues work onto the Revit API thread.
-- `CodexBatchHost`: exposes the tool descriptor catalog.
+- `ReVitAIBatchHost`: exposes the tool descriptor catalog.
 - `ToolDispatcher`: validates and executes all tools.
-- `RevitAiBatchApplication`: Revit add-in entry point and ribbon commands.
+- `ReVitAIBridgeApplication`: Revit add-in entry point and ribbon commands.
 - `Models`: request, response and tool descriptor types.
 - `Units`: millimetres and Revit internal unit conversion.
 

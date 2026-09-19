@@ -1,8 +1,8 @@
 using Autodesk.Revit.UI;
 
-namespace RevitAiBatch;
+namespace ReVitAI.Bridge;
 
-public sealed class RevitAiBatchApplication : IExternalApplication
+public sealed class ReVitAIBridgeApplication : IExternalApplication
 {
     private BridgeServer? _server;
     private ToolDispatcher? _dispatcher;
@@ -13,11 +13,11 @@ public sealed class RevitAiBatchApplication : IExternalApplication
         {
             _dispatcher = new ToolDispatcher();
             _server = new BridgeServer(_dispatcher);
-            RevitAiBatchApplicationRuntime.Server = _server;
-            CodexBatchHost.Register(_dispatcher);
+            ReVitAIBridgeApplicationRuntime.Server = _server;
+            ReVitAIBatchHost.Register(_dispatcher);
             _server.Start();
 
-            const string tabName = "Codex Revit";
+            const string tabName = "ReVitAI";
             try
             {
                 application.CreateRibbonTab(tabName);
@@ -29,14 +29,14 @@ public sealed class RevitAiBatchApplication : IExternalApplication
 
             var panel = application.CreateRibbonPanel(tabName, "Batch Bridge");
             var button = new PushButtonData(
-                "RevitAiBatchStatus",
+                "ReVitAIBridgeStatus",
                 "Bridge\nStatus",
-                typeof(RevitAiBatchApplication).Assembly.Location,
+                typeof(ReVitAIBridgeApplication).Assembly.Location,
                 typeof(ShowBridgeStatusCommand).FullName);
-            button.ToolTip = "Show the Codex Revit Batch bridge status.";
+            button.ToolTip = "Show the ReVitAI Bridge status.";
             panel.AddItem(button);
 
-            BridgeLog.Write("RevitAI Codex Batch add-in started.");
+            BridgeLog.Write("ReVitAI Bridge add-in started.");
             return Result.Succeeded;
         }
         catch (Exception ex)
@@ -54,15 +54,15 @@ public sealed class RevitAiBatchApplication : IExternalApplication
             {
                 _server.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 _server = null;
-                RevitAiBatchApplicationRuntime.Server = null;
+                ReVitAIBridgeApplicationRuntime.Server = null;
             }
 
             if (_dispatcher is not null)
             {
-                CodexBatchHost.Unregister(_dispatcher);
+                ReVitAIBatchHost.Unregister(_dispatcher);
                 _dispatcher = null;
             }
-            BridgeLog.Write("RevitAI Codex Batch add-in stopped.");
+            BridgeLog.Write("ReVitAI Bridge add-in stopped.");
             return Result.Succeeded;
         }
         catch (Exception ex)
@@ -81,17 +81,17 @@ public sealed class ShowBridgeStatusCommand : IExternalCommand
         ref string message,
         Autodesk.Revit.DB.ElementSet elements)
     {
-        var server = RevitAiBatchApplicationRuntime.Server;
+        var server = ReVitAIBridgeApplicationRuntime.Server;
         TaskDialog.Show(
-            "Codex Revit Batch",
+            "ReVitAI Bridge",
             server is null
                 ? "Bridge is not running."
-                : $"Bridge is running.\n\nPipe: {server.PipeName}\nPending: {server.Invoker.PendingCount}\n\nCodex drawing is handled through apply_drawing_plan. The original Revit AI console remains available on the Revit AI tab.");
+                : $"Bridge is running.\n\nPipe: {server.PipeName}\nPending: {server.Invoker.PendingCount}\n\nStructured drawing plans are handled through apply_drawing_plan.");
         return Result.Succeeded;
     }
 }
 
-internal static class RevitAiBatchApplicationRuntime
+internal static class ReVitAIBridgeApplicationRuntime
 {
     public static BridgeServer? Server { get; set; }
 }

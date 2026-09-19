@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.2.5
+## 1.4.0 - 2026-09-19
 
-- Added native column, beam, room, door and window tools.
-- Added element geometry/query/delete and family loading tools.
-- Added warning filtering and category identity fixes.
-- Added configurable Revit API build path for source builds.
-- Prepared a clean source package separate from compatibility binaries.
+- Released the ReVitAI Bridge core tool and API layer for the Revit-AI-Bridge Agent workflow.
+- Kept 47 native Revit 2027 tools with typed JSON contracts.
+- Added current-user Named Pipe discovery and structured request handling.
+- Added transaction, dry-run, batch, plan, and readback support.
+- Unified the source, assembly, add-in, and tool catalog under the `ReVitAI.Bridge` namespace.
+- Added clean source and binary release packaging for Revit 2027.

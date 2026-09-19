@@ -1,163 +1,119 @@
-# Revit AI Bridge 开源项目简介
+# ReVitAI Bridge 开源项目简介
 
-版本：`1.2.5`
-状态：内部开发版已核验，准备进行开源拆分
+版本：`1.4.0`
+状态：核心版已构建并通过发布物核验
 发布日期：2026-09-19
 
-## 1. 一句话简介
+## 1. 项目定位
 
-Revit AI Bridge 是一个运行在本机、面向 Autodesk Revit 2027 的类型化 AI 自动化桥接工具。它把 Revit API 的读取、建模、查询、计划执行和保存能力封装为 47 个结构化工具，并通过用户级 Named Pipe 提供给 AI Agent、脚本或本地客户端。
+ReVitAI Bridge 是运行在本机、面向 Autodesk Revit 2027 的类型化工具和 API 层。
 
-## 2. 项目目的
+它与你之前发布的 `Revit-AI-Bridge` Agent 工作流配合使用：
 
-Revit 本身虽然提供完整 API，但 AI Agent 直接操作 Revit 存在几个问题：
+```text
+Revit-AI-Bridge Agent
+        |
+        v
+ReVitAI Bridge
+        |
+        v
+Autodesk Revit 2027
+```
+
+Agent 生成结构化 JSON 请求，ReVitAI Bridge 在 Revit 主线程执行对应工具，并用回读数据返回结果。
+
+## 2. 解决的问题
 
 - Revit API 必须在 Revit 主线程执行。
-- 任意 C# 脚本难以审计、复现和回滚。
-- 多模型、多文档并行时容易操作错误文件。
-- 大语言模型直接生成 Revit API 代码不稳定。
-- 传统视觉方式需要加载大量截图，上下文成本高。
+- Agent 直接生成 C# 代码难以审计和复现。
+- 多文档操作需要明确目标文档。
+- 写入操作需要事务、回滚和回读。
+- 视觉截图方式会消耗大量上下文。
 
-本项目的目的是提供一个可审计的中间层：
+ReVitAI Bridge 提供稳定、可审计的结构化工具层，避免 Agent 直接拼接 Revit API 代码。
 
-1. AI 只提交结构化 JSON。
-2. 桥接验证工具名、参数、单位和目标文档。
-3. Revit 主线程执行事务。
-4. 支持 dry-run、回滚和回读。
-5. 返回模型可继续处理的 JSON，不依赖反复截图。
+## 3. 核心能力
 
-## 3. 项目价值
-
-### 对 AI Agent
-
-- 将不可控的代码生成替换为明确的工具调用。
-- 每个工具都有输入 schema 和可回读结果。
-- 支持批量计划和依赖阶段。
-- 大幅减少截图和视觉 token 消耗。
-
-### 对 Revit 开发者
-
-- 提供现成的 Named Pipe 与 ExternalEvent 架构。
-- 工具事务、单位转换和错误回滚已经封装。
-- 可直接扩展新的文档、建筑、结构、注释和视图工具。
-
-### 对工程团队
-
-- 可以把重复建模任务脚本化。
-- 可以用 JSON 计划记录操作过程。
-- 可以在执行前 dry-run，执行后读取 ElementId 验证。
-- 不把模型数据发送到云服务，默认本地运行。
-
-## 4. 典型场景
-
-- 从轴网和标高开始创建标准楼层。
-- 批量创建柱、梁、楼板、墙和房间。
-- 按表格数据生成构件和族实例。
-- 调取或检查元素几何、类别和位置。
-- 对图纸 PDF 的结构化提取结果执行 Revit 建模计划。
-- 让 AI Agent 在模型变更前执行 dry-run。
-- 自动导出 3D 校核图或视图图片。
-
-## 5. 核心能力
-
-- 47 个高精度工具。
-- Dry-run 和事务回滚。
-- `batch` 多工具批量执行。
-- `apply_drawing_plan` 分阶段工程计划。
-- 当前用户限定 Named Pipe。
+- 47 个 Revit 工具。
+- 当前用户 Named Pipe。
+- JSON-line 请求和响应。
 - 文档 GUID 检查。
+- 读取与写入分离。
+- Revit 事务和失败回滚。
+- `dryRun` 计划审查。
+- `batch` 批量执行。
+- `apply_drawing_plan` 分阶段计划。
+- 写入后 ElementId 和属性回读。
 - 毫米与 Revit 内部英尺单位转换。
-- 原生墙、楼板、房间、门窗、柱。
-- 结构框架原生或受控回退。
-- 元素查询、几何查询和删除。
-- 3D 视图创建和 PNG 导出。
+- 建筑、结构、房间、注释、视图和导出工具。
 
-## 6. 系统结构
+## 4. 工具分组
 
-`	ext
-AI Agent / Script
-        |
-        v
-Named Pipe Client
-        |
-        v
-Bridge Server
-        |
-        v
-Revit ExternalEvent
-        |
-        v
-Tool Dispatcher
-        |
-        +--> Transaction
-        +--> Dry-run
-        +--> Readback JSON
-`
+1. 文档与上下文。
+2. 标高与轴网。
+3. 建筑构件。
+4. 结构构件。
+5. 房间与边界。
+6. 注释与详图。
+7. 视图与导出。
+8. 计划与批处理。
+9. 族、查询与对象管理。
 
-## 7. 测试环境
+完整目录见 [tool-catalog.json](tool-catalog.json)。
 
-本次最终核验环境：
+## 5. 调用流程
 
-- Windows 版本：Microsoft Windows 11 家庭版 中文版 10.0.26200
-- Autodesk Revit：2027.3，教育版
-- .NET SDK：10.0.401
-- 目标框架：`net10.0-windows`
-- 平台：`x64`
-- Git：2.53.0.2
-- PowerShell：Windows PowerShell 5.1
-- 测试模型：`<local-test-model>.rvt`
+1. Agent 从 `%LOCALAPPDATA%\ReVitAI\revitai-bridge.json` 读取 Named Pipe 信息。
+2. Agent 调用 `tools.list` 获取工具和输入 Schema。
+3. Agent 调用 `get_document_snapshot` 获取当前文档上下文。
+4. 写入前调用 `dryRun: true`。
+5. 确认后调用写入工具或 `apply_drawing_plan`。
+6. Bridge 返回 ElementId、状态和回读值。
 
-已完成的实际验证：
+## 6. 源码结构
 
-- `RevitAiBatch` 编译通过，0 个错误。
-- 内置 Revit AI 注册工具成功，工具数 47。
-- Revit 2027 实际创建和保存模型成功。
-- 原生柱、门窗、房间和几何查询实际回读成功。
-- 3D 视图创建和 PNG 导出成功。
-- 文档保存后 `IsModified=false`。
+```text
+src/ReVitAI.Bridge
+build
+installer
+docs
+```
 
-尚未验证：
+主要模块：
 
-- Revit 2025、2026 或其他版本。
-- 多 Revit 实例并发写入。
-- 长时间无人值守运行。
-- GitHub Actions 中的 Revit 实机测试。
-- 正式代码签名后的加载行为。
-- 商业使用场景下的全部第三方许可。
+- Named Pipe 服务器。
+- Revit ExternalEvent 调度器。
+- 工具注册与执行器。
+- 事务和回滚。
+- 单位转换。
+- Revit 加载项入口。
 
-## 8. 开源价值定位
+## 7. 运行环境
 
-该项目适合作为：
+- Windows 10 或 Windows 11。
+- Autodesk Revit 2027 x64。
+- 从源码构建时需要 .NET 10 x64 SDK。
+- Autodesk Revit API 二进制不随项目分发。
 
-- Revit + AI Agent 的本地工具桥。
-- CAD/PDF 提取结果到 Revit 的结构化执行层。
-- Revit 自动化插件开发的最小框架。
-- MCP、HTTP 或本地 CLI 的上游工具核心。
-- 建筑、结构自动化脚本的公共协议层。
+## 8. 构建结果
 
-## 9. 当前发布边界
+- Release 构建：`0 errors / 0 warnings`。
+- 工具数量：`47`。
+- 程序集：`ReVitAI.Bridge.dll 1.4.0.0`。
+- 命名空间：`ReVitAI.Bridge`。
+- 加载项名称：`ReVitAI Bridge`。
 
-开源源码仓库建议只包含自研工具层、协议层、桥接层和安装脚本。
+## 9. 发布边界
 
-不建议直接提交：
+开源仓库包含自研工具层、协议层、桥接层、加载项和安装脚本。
+
+不分发：
 
 - Revit 安装目录中的 API DLL。
-- 旧控制台兼容二进制。
-- 需要单独授权的表格、PDF、浏览器或 CAD 依赖。
 - 用户模型、日志、截图和导出文件。
-- 历史品牌字段和旧桥接命名。
+- 本机绝对路径和测试数据。
+- 敏感凭据、测试数据或本机私有信息。
 
-## 10. 建议许可证
+## 10. 许可证
 
-自有核心建议使用 Apache-2.0。第三方依赖单独维护 `THIRD_PARTY_NOTICES.md`，并在发布包中注明版本、来源、许可证和分发方式。
-
-## 11. 推荐首发内容
-
-- 干净核心源码
-- 47 工具 JSON 清单
-- 架构文档
-- 安全模型
-- 安装脚本
-- 示例 drawing plan
-- Revit 2027 实测报告
-- 构建与 Release 流程
+自有核心使用 Apache-2.0。第三方依赖审计见 `THIRD_PARTY_NOTICES.md` 和 `docs/third-party-audit.md`。
