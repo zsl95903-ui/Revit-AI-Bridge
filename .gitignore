@@ -1,0 +1,16 @@
+bin/
+obj/
+artifacts/
+*.user
+*.suo
+*.log
+*.rvt
+*.rfa
+*.rte
+*.rft
+*.png
+*.jpg
+*.jpeg
+*.zip
+.DS_Store
+.vs/
