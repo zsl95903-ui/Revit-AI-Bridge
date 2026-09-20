@@ -1,7 +1,7 @@
 # Third-Party Audit
 
 Audit date: 2026-09-19
-Release: `1.4.0`
+Release: `2.1.0`
 Scope: ReVitAI Bridge source and release packages for the Revit-AI-Bridge Agent workflow.
 
 ## 1. Repository References
@@ -24,7 +24,7 @@ Scope: ReVitAI Bridge source and release packages for the Revit-AI-Bridge Agent 
 ## 3. Release Checklist
 
 - [x] Confirm the assembly name and namespace are `ReVitAI.Bridge`.
-- [x] Confirm release assembly version is `1.4.0.0`.
+- [x] Confirm release assembly version is `2.1.0.0`.
 - [x] Confirm the release package contains one distributed assembly.
 - [x] Confirm Autodesk API binaries are not packaged.
 - [x] Confirm no local model, log, screenshot, or export file is packaged.

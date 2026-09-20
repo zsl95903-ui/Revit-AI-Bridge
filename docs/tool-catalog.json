@@ -1,220 +1,252 @@
 {
   "project": "ReVitAI Bridge",
-  "release_label": "1.4.0",
-  "tool_count": 47,
+  "release_label": "2.1.0",
+  "tool_count": 48,
+  "generated_from": "src/ReVitAI.Bridge/ToolDispatcher.cs",
   "tools": [
     {
-      "name": "activate_view",
+      "name": "ping",
+      "group": "Document & Context",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
-      "description": "Activate a Revit view in the UI."
-    },
-    {
-      "name": "apply_drawing_plan",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Execute a multi-operation drawing plan with dependency phases and one undo group."
-    },
-    {
-      "name": "batch",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Execute multiple tools in one transaction."
-    },
-    {
-      "name": "create_3d_view",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create or reuse a native 3D view and activate it on the canvas."
+      "description": "Bridge health check."
     },
     {
       "name": "create_boxes",
+      "group": "Structure",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Create extruded 3D boxes for columns, stairs, and massing."
     },
     {
-      "name": "create_detail_curves",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create detail lines, arcs, and polylines in one view and transaction."
-    },
-    {
-      "name": "create_dimension_by_elements",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a dimension chain from elements."
-    },
-    {
-      "name": "create_door",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a native door family instance in a host wall."
-    },
-    {
-      "name": "create_floor_by_profile",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a native floor from a closed profile."
-    },
-    {
-      "name": "create_grid",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create one or more grids."
-    },
-    {
-      "name": "create_level",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a level at a metre elevation."
-    },
-    {
-      "name": "create_room",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create and name a room at a point on a level."
-    },
-    {
-      "name": "create_straight_wall",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a straight native wall."
-    },
-    {
-      "name": "create_structural_beam",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a native structural beam or a structural-framing fallback."
-    },
-    {
-      "name": "create_structural_column",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a native structural column or a structural-column fallback."
-    },
-    {
-      "name": "create_text_notes",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create one or more text notes in a view."
-    },
-    {
-      "name": "create_wall_with_openings",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a straight native wall with door or window gaps and header segments."
-    },
-    {
-      "name": "create_window",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Create a native window family instance in a host wall."
-    },
-    {
-      "name": "delete_elements",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Delete one or more elements by ID."
-    },
-    {
-      "name": "element_query",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Query elements by category, name, type, and limit."
-    },
-    {
-      "name": "export_view_image",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": false,
-      "description": "Export a view to PNG."
-    },
-    {
-      "name": "fit_view_crop_to_elements",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Expand a view crop to include selected or visible elements."
-    },
-    {
-      "name": "get_active_view",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read the active view."
-    },
-    {
-      "name": "get_all_grids",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read all grids."
-    },
-    {
-      "name": "get_all_levels",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read all levels."
-    },
-    {
-      "name": "get_all_views",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read all non-template views."
-    },
-    {
-      "name": "get_document_info",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read active document information."
-    },
-    {
-      "name": "get_document_snapshot",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read document identity, active view, levels, and context for precise preflight."
-    },
-    {
-      "name": "get_element_geometry",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read bounding box, location, solids, curves, category, and type of an element."
-    },
-    {
       "name": "get_family_types",
+      "group": "Types & Families",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "List loaded family types by family, type, and category."
     },
     {
+      "name": "create_structural_column",
+      "group": "Structure",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a native structural column or a structural-column fallback."
+    },
+    {
+      "name": "create_structural_beam",
+      "group": "Structure",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a native structural beam or a structural-framing fallback."
+    },
+    {
+      "name": "create_room",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create and name a room at a point on a level."
+    },
+    {
+      "name": "get_room_boundaries",
+      "group": "Architecture",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read the boundary loops and segments of a room."
+    },
+    {
+      "name": "delete_elements",
+      "group": "Element Operations",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Delete one or more elements by ID."
+    },
+    {
+      "name": "get_element_geometry",
+      "group": "Element Operations",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read bounding box, location, solids, curves, category, and type of an element."
+    },
+    {
+      "name": "element_query",
+      "group": "Element Operations",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Query elements by category, name, type, and limit."
+    },
+    {
+      "name": "create_floor_by_profile",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a native floor from a closed profile."
+    },
+    {
+      "name": "load_family",
+      "group": "Types & Families",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Load a Revit family file into the active document."
+    },
+    {
+      "name": "create_window",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a native window family instance in a host wall."
+    },
+    {
+      "name": "create_dimension_by_elements",
+      "group": "Annotation",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a dimension chain from elements."
+    },
+    {
+      "name": "import_pdf_underlay",
+      "group": "Plans & I/O",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Import a PDF page as a Revit image underlay."
+    },
+    {
+      "name": "create_detail_curves",
+      "group": "Annotation",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create detail lines, arcs, and polylines in one view and transaction."
+    },
+    {
+      "name": "create_text_notes",
+      "group": "Annotation",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create one or more text notes in a view."
+    },
+    {
+      "name": "set_element_color",
+      "group": "Views",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Apply a projection-line color override in a view."
+    },
+    {
+      "name": "move_elements",
+      "group": "Element Operations",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Move elements by millimetres."
+    },
+    {
+      "name": "rotate_element",
+      "group": "Element Operations",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Rotate elements by degrees."
+    },
+    {
+      "name": "fit_view_crop_to_elements",
+      "group": "Views",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Expand a view crop to include selected or visible elements."
+    },
+    {
+      "name": "create_door",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a native door family instance in a host wall."
+    },
+    {
+      "name": "create_wall_with_openings",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a straight native wall with door or window gaps and header segments."
+    },
+    {
+      "name": "create_straight_wall",
+      "group": "Architecture",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Create a straight native wall."
+    },
+    {
+      "name": "set_level_line_pattern",
+      "group": "Levels & Grids",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Set the projection line pattern for the Level category."
+    },
+    {
+      "name": "get_document_info",
+      "group": "Document & Context",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read active document information."
+    },
+    {
+      "name": "get_active_view",
+      "group": "Document & Context",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read the active view."
+    },
+    {
+      "name": "get_all_levels",
+      "group": "Levels & Grids",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read all levels."
+    },
+    {
+      "name": "get_all_grids",
+      "group": "Levels & Grids",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read all grids."
+    },
+    {
+      "name": "get_wall_types",
+      "group": "Types & Families",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read available wall types."
+    },
+    {
       "name": "get_floor_types",
+      "group": "Types & Families",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
@@ -222,76 +254,79 @@
     },
     {
       "name": "get_project_units",
+      "group": "Document & Context",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Read effective project length unit."
     },
     {
-      "name": "get_room_boundaries",
+      "name": "get_all_views",
+      "group": "Document & Context",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
-      "description": "Read the boundary loops and segments of a room."
+      "description": "Read all non-template views."
+    },
+    {
+      "name": "get_document_snapshot",
+      "group": "Document & Context",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Read document identity, active view, levels, and context for precise preflight."
+    },
+    {
+      "name": "activate_view",
+      "group": "Document & Context",
+      "mutating": false,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Activate a Revit view in the UI."
     },
     {
       "name": "get_view_settings",
+      "group": "Views",
       "mutating": false,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Read view crop, outline, scale, and detail level."
     },
     {
-      "name": "get_wall_types",
-      "mutating": false,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Read available wall types."
-    },
-    {
       "name": "hide_elements_in_view",
+      "group": "Views",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Hide or unhide elements in a specific view."
     },
     {
-      "name": "import_pdf_underlay",
+      "name": "create_3d_view",
+      "group": "Views",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
-      "description": "Import a PDF page as a Revit image underlay."
+      "description": "Create or reuse a native 3D view and activate it on the canvas."
     },
     {
-      "name": "load_family",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Load a Revit family file into the active document."
-    },
-    {
-      "name": "move_elements",
-      "mutating": true,
-      "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Move elements by millimetres."
-    },
-    {
-      "name": "ping",
+      "name": "zoom_to_elements",
+      "group": "Views",
       "mutating": false,
       "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Bridge health check."
+      "supportsDryRun": false,
+      "description": "Zoom the active view to elements."
     },
     {
-      "name": "rotate_element",
-      "mutating": true,
+      "name": "export_view_image",
+      "group": "Views",
+      "mutating": false,
       "requiresActiveDocument": true,
-      "supportsDryRun": true,
-      "description": "Rotate elements by degrees."
+      "supportsDryRun": false,
+      "description": "Export a view to PNG."
     },
     {
       "name": "save_document",
+      "group": "Plans & I/O",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
@@ -299,38 +334,59 @@
     },
     {
       "name": "save_document_as",
+      "group": "Plans & I/O",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Save the active document as a .rvt file."
     },
     {
-      "name": "set_element_color",
+      "name": "create_grid",
+      "group": "Levels & Grids",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
-      "description": "Apply a projection-line color override in a view."
+      "description": "Create one or more grids."
     },
     {
-      "name": "set_level_head_text_size",
+      "name": "create_level",
+      "group": "Levels & Grids",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
-      "description": "Set datum level head text size in millimetres."
+      "description": "Create a level at a metre elevation."
     },
     {
       "name": "upsert_level",
+      "group": "Levels & Grids",
       "mutating": true,
       "requiresActiveDocument": true,
       "supportsDryRun": true,
       "description": "Create or update a level by name and elevation."
     },
     {
-      "name": "zoom_to_elements",
-      "mutating": false,
+      "name": "set_level_head_text_size",
+      "group": "Levels & Grids",
+      "mutating": true,
       "requiresActiveDocument": true,
-      "supportsDryRun": false,
-      "description": "Zoom the active view to elements."
+      "supportsDryRun": true,
+      "description": "Set datum level head text size in millimetres."
+    },
+    {
+      "name": "apply_drawing_plan",
+      "group": "Plans & I/O",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Execute a multi-operation drawing plan with dependency phases and one undo group."
+    },
+    {
+      "name": "batch",
+      "group": "Plans & I/O",
+      "mutating": true,
+      "requiresActiveDocument": true,
+      "supportsDryRun": true,
+      "description": "Execute multiple tools in one transaction."
     }
   ]
 }

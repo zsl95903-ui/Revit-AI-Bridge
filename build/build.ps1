@@ -21,3 +21,7 @@ if ($LASTEXITCODE -ne 0) { throw "ReVitAI Bridge restore failed." }
 $buildArgs = @("build", $project, "-c", "Release", "--no-restore", "-p:BaseIntermediateOutputPath=$obj", "-p:OutputPath=$bin", "-p:RevitApiDir=$RevitApiDir")
 & dotnet @buildArgs
 if ($LASTEXITCODE -ne 0) { throw "ReVitAI Bridge build failed." }
+
+$mcpProject = Join-Path $root "src\RevitAi.McpServer\RevitAi.McpServer.csproj"
+& dotnet build $mcpProject -c Release
+if ($LASTEXITCODE -ne 0) { throw "RevitAi MCP Server build failed." }

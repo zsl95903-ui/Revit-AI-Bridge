@@ -4,8 +4,14 @@ namespace ReVitAI.Bridge;
 
 public sealed class ReVitAIBridgeApplication : IExternalApplication
 {
+    private readonly bool _createRibbon;
     private BridgeServer? _server;
     private ToolDispatcher? _dispatcher;
+
+    public ReVitAIBridgeApplication(bool createRibbon = true)
+    {
+        _createRibbon = createRibbon;
+    }
 
     public Result OnStartup(UIControlledApplication application)
     {
@@ -17,26 +23,32 @@ public sealed class ReVitAIBridgeApplication : IExternalApplication
             ReVitAIBatchHost.Register(_dispatcher);
             _server.Start();
 
-            const string tabName = "ReVitAI";
-            try
+            if (_createRibbon)
             {
-                application.CreateRibbonTab(tabName);
-            }
-            catch
-            {
-                // Tab already exists.
+                const string tabName = "ReVitAI";
+                try
+                {
+                    application.CreateRibbonTab(tabName);
+                }
+                catch
+                {
+                    // Tab already exists.
+                }
+
+                var panel = application.CreateRibbonPanel(tabName, "Batch Bridge");
+                var button = new PushButtonData(
+                    "ReVitAIBridgeStatus",
+                    "Bridge\nStatus",
+                    typeof(ReVitAIBridgeApplication).Assembly.Location,
+                    typeof(ShowBridgeStatusCommand).FullName);
+                button.ToolTip = "Show the ReVitAI Bridge status.";
+                panel.AddItem(button);
             }
 
-            var panel = application.CreateRibbonPanel(tabName, "Batch Bridge");
-            var button = new PushButtonData(
-                "ReVitAIBridgeStatus",
-                "Bridge\nStatus",
-                typeof(ReVitAIBridgeApplication).Assembly.Location,
-                typeof(ShowBridgeStatusCommand).FullName);
-            button.ToolTip = "Show the ReVitAI Bridge status.";
-            panel.AddItem(button);
-
-            BridgeLog.Write("ReVitAI Bridge add-in started.");
+            BridgeLog.Write(
+                _createRibbon
+                    ? "ReVitAI Bridge add-in started."
+                    : "ReVitAI Bridge add-in started headless.");
             return Result.Succeeded;
         }
         catch (Exception ex)

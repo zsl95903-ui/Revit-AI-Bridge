@@ -652,6 +652,62 @@ internal sealed partial class ToolDispatcher
             lengthParameter.Set(Units.MmToFeet(Json.Double(source, "heightMm", Json.Double(source, "height"))));
         }
     }
+    private static object SetLevelLinePattern(InvocationContext context)
+    {
+        var source = context.Arguments;
+        var patternName = Json.StringAny(
+            source,
+            "patternName",
+            "linePatternName",
+            "name");
+        var patternId = Json.Long(
+            source,
+            "patternId",
+            Json.Long(source, "linePatternId", 0));
+        LinePatternElement? pattern = null;
+
+        if (patternId > 0)
+        {
+            pattern = context.Document.GetElement(new ElementId(patternId))
+                as LinePatternElement;
+        }
+
+        if (pattern is null && !string.IsNullOrWhiteSpace(patternName))
+        {
+            pattern = new FilteredElementCollector(context.Document)
+                .OfClass(typeof(LinePatternElement))
+                .Cast<LinePatternElement>()
+                .FirstOrDefault(candidate => candidate.Name.Equals(
+                    patternName,
+                    StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (pattern is null)
+        {
+            throw new InvalidOperationException(
+                "A valid line patternId or patternName is required.");
+        }
+
+        var category = context.Document.Settings.Categories.get_Item(
+            BuiltInCategory.OST_Levels);
+        var oldPatternId = category.GetLinePatternId(
+            GraphicsStyleType.Projection);
+        if (!context.DryRun)
+        {
+            category.SetLinePatternId(
+                pattern.Id,
+                GraphicsStyleType.Projection);
+        }
+
+        return new
+        {
+            Scope = "AllLevels",
+            PatternId = pattern.Id.Value,
+            PatternName = pattern.Name,
+            PreviousPatternId = oldPatternId.Value,
+            Applied = !context.DryRun,
+        };
+    }
     private static void TrySetMark(Element element, string? mark)
     {
         if (string.IsNullOrWhiteSpace(mark))

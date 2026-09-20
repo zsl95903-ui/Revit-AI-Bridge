@@ -14,3 +14,21 @@ artifacts/
 *.zip
 .DS_Store
 .vs/
+
+# Signing material, local secrets, and discovery files
+*.pfx
+*.p12
+*.snk
+*.key
+*.pem
+*.dpapi
+*.cer
+*.crt
+code-signing/
+secrets/
+settings.json
+bridge.json
+codex-bridge*.json
+revitai-bridge*.json
+sessions/
+*.pdf

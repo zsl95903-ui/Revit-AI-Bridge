@@ -11,7 +11,7 @@ $root = Split-Path -Parent $PSScriptRoot
 & (Join-Path $PSScriptRoot "build.ps1") -RevitApiDir $RevitApiDir
 if ($LASTEXITCODE -ne 0) { throw "Packaging stopped because the build failed." }
 
-$version = "1.4.0"
+$version = "2.1.0"
 $out = Join-Path $root "artifacts\ReVitAI-Bridge-Core-v$version"
 $zip = "$out.zip"
 $bin = Join-Path $root "artifacts\build\ReVitAI.Bridge\bin"

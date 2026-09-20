@@ -1,6 +1,6 @@
 # ReVitAI Bridge 开源项目简介
 
-版本：`1.4.0`
+版本：`2.1.0`
 状态：核心版已构建并通过发布物核验
 发布日期：2026-09-19
 
@@ -34,7 +34,7 @@ ReVitAI Bridge 提供稳定、可审计的结构化工具层，避免 Agent 直�
 
 ## 3. 核心能力
 
-- 47 个 Revit 工具。
+- 48 个 Revit 工具。
 - 当前用户 Named Pipe。
 - JSON-line 请求和响应。
 - 文档 GUID 检查。
@@ -98,8 +98,8 @@ docs
 ## 8. 构建结果
 
 - Release 构建：`0 errors / 0 warnings`。
-- 工具数量：`47`。
-- 程序集：`ReVitAI.Bridge.dll 1.4.0.0`。
+- 工具数量：`48`。
+- 程序集：`ReVitAI.Bridge.dll 2.1.0.0`。
 - 命名空间：`ReVitAI.Bridge`。
 - 加载项名称：`ReVitAI Bridge`。
 

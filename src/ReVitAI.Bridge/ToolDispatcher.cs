@@ -48,6 +48,7 @@ internal sealed partial class ToolDispatcher
             Write("create_level", "Create a level at a metre elevation.", CreateLevel),
             Write("upsert_level", "Create or update a level by name and elevation.", UpsertLevel),
             Write("set_level_head_text_size", "Set datum level head text size in millimetres.", SetLevelHeadTextSize),
+            Write("set_level_line_pattern", "Set the projection line pattern for the Level category.", SetLevelLinePattern, LevelLinePatternSchema()),
             Write("create_straight_wall", "Create a straight native wall.", CreateStraightWall),
             Write(
                 "create_wall_with_openings",
@@ -271,7 +272,8 @@ internal sealed partial class ToolDispatcher
     private static ToolDefinition Write(
         string name,
         string description,
-        Func<InvocationContext, object?> handler)
+        Func<InvocationContext, object?> handler,
+        object? inputSchema = null)
         => new()
         {
             Name = name,
@@ -279,12 +281,37 @@ internal sealed partial class ToolDispatcher
             Mutating = true,
             RequiresActiveDocument = true,
             Handler = handler,
+            InputSchema = inputSchema,
         };
 
     private static object GenericSchema() => new
     {
         Type = "object",
         AdditionalProperties = true,
+    };
+
+    private static object LevelLinePatternSchema() => new
+    {
+        Type = "object",
+        Properties = new
+        {
+            PatternId = new
+            {
+                Type = "integer",
+                Description = "LinePatternElement id. Either patternId or patternName is required.",
+            },
+            PatternName = new
+            {
+                Type = "string",
+                Description = "Line pattern name, for example 长虚线. Either patternId or patternName is required.",
+            },
+            DryRun = new
+            {
+                Type = "boolean",
+                Description = "Preview the change without committing it.",
+            },
+        },
+        AdditionalProperties = false,
     };
 
     private static object GetDocumentInfo(InvocationContext context)
@@ -1224,6 +1251,7 @@ internal sealed partial class ToolDispatcher
                     "create_detail_lines" => CreateDetailLines(context with { Arguments = operation }),
                     "create_detail_curves" => CreateDetailCurves(context with { Arguments = operation }),
                     "create_text_notes" => CreateTextNotes(context with { Arguments = operation }),
+                    "set_level_line_pattern" => SetLevelLinePattern(context with { Arguments = operation }),
                     "set_color" or "set_element_color" => SetElementColor(context with { Arguments = operation }),
                     "move_elements" => MoveElements(context with { Arguments = operation }),
                     "rotate_element" or "rotate_elements" => RotateElements(context with { Arguments = operation }),

@@ -1,9 +1,9 @@
 # ReVitAI Bridge 开源发布方案
 
-状态：`1.4.0` 核心版已构建并完成发布物核验。
+状态：`2.1.0` 核心版与 MCP 源码已构建并完成发布物核验。
 定位：为之前发布的 `Revit-AI-Bridge` Agent 工作流提供本地、类型化的 Revit 工具和 API 层。
-核心程序集：`ReVitAI.Bridge.dll 1.4.0.0`
-工具数量：`47`
+核心程序集：`ReVitAI.Bridge.dll 2.1.0.0`
+工具数量：`48`
 
 ## 1. 项目关系
 
@@ -33,7 +33,7 @@ Revit 2027 API
 开源内容包括：
 
 - `ReVitAI.Bridge` 自研 C# 源码。
-- 47 个 Revit 工具定义和 JSON Schema。
+- 48 个 Revit 工具定义和 JSON Schema。
 - Named Pipe 通信层。
 - Revit ExternalEvent 和主线程调度层。
 - 事务、回读、dry-run、batch 和 drawing plan 执行层。
@@ -118,7 +118,7 @@ powershell -ExecutionPolicy Bypass -File .\build\build.ps1 `
 ## 7. 安装与联调
 
 1. 关闭 Revit。
-2. 解压 `ReVitAI-Bridge-Core-v1.4.0.zip`。
+2. 解压 `ReVitAI-Bridge-Core-v2.1.0.zip`。
 3. 运行 `install.ps1`。
 4. 启动 Revit 2027 并打开项目。
 5. 从 `%LOCALAPPDATA%\ReVitAI\revitai-bridge.json` 读取 Named Pipe 名称。
@@ -128,8 +128,8 @@ powershell -ExecutionPolicy Bypass -File .\build\build.ps1 `
 ## 8. 验证
 
 - Release 构建：`0 errors / 0 warnings`。
-- 工具目录声明数量和实际数量：`47 / 47`。
-- 核心程序集文件版本：`1.4.0.0`。
+- 工具目录声明数量和实际数量：`48 / 48`。
+- 核心程序集文件版本：`2.1.0.0`。
 - 发布包仅包含一个程序集：`ReVitAI.Bridge.dll`。
 - 源码包不包含 `artifacts`、`.git`、`bin`、`obj` 和本机运行数据。
 
@@ -141,7 +141,7 @@ powershell -ExecutionPolicy Bypass -File .\build\build.ps1 `
 
 - [x] 命名空间统一为 `ReVitAI.Bridge`。
 - [x] 工具集合字段统一为 `ReVitAI`。
-- [x] 47 个工具目录通过构建核验。
+- [x] 48 个工具目录通过构建核验。
 - [x] Release 构建通过。
 - [x] 发布包通过程序集和文件边界检查。
 - [x] 源码包通过敏感凭据和本机路径扫描。
