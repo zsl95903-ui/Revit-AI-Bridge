@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>RevitToolSet</RootNamespace>
+    <AssemblyName>RevitToolSet</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RevitInstallDir Condition="'$(RevitInstallDir)' == ''">C:\Program Files\Autodesk\Revit 2027</RevitInstallDir>
+
+    <!-- 生成目录放在 %TEMP%（Documents 受受控文件夹访问保护，构建期不可写） -->
+    <ToolSetGeneratedDir>$(TEMP)\revitai-engine-poc\generated\</ToolSetGeneratedDir>
+
+    <!-- 自研工具契约目录（由本模块生成/维护，不包含厂商 DLL 或反编译源码）。 -->
+    <VendorToolCatalog Condition="'$(VendorToolCatalog)' == ''">$(MSBuildThisFileDirectory)..\..\contracts\tool-contracts.json</VendorToolCatalog>
+
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Engine.Abstractions\RevitAi.Engine.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.Core\RevitAi.Engine.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>$(RevitInstallDir)\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+    工具类由 tools/ToolSetGenerator 生成到 $(ToolSetGeneratedDir)（%TEMP%）。
+    生成刻意放在编译之前作为独立步骤（build.ps1 的第一步），不在 MSBuild 里嵌套 dotnet run——
+    嵌套调用会与外层构建的 NuGet/obj 还原锁冲突（实测 exit -532462766）。
+  -->
+  <Target Name="IncludeGeneratedRevitToolSet" BeforeTargets="BeforeCompile">
+    <Error Condition="!Exists('$(ToolSetGeneratedDir)GeneratedTools.g.cs')"
+           Text="尚未生成 RevitToolSet 工具类。请先运行 build.ps1，或手工执行：dotnet run --project tools\ToolSetGenerator -- --catalog &quot;$(VendorToolCatalog)&quot; --out-tools &quot;$(ToolSetGeneratedDir)&quot; --namespace RevitToolSet" />
+    <ItemGroup>
+      <Compile Include="$(ToolSetGeneratedDir)GeneratedTools.g.cs" />
+    </ItemGroup>
+    <Message Importance="high" Text="RevitToolSet: 已纳入生成工具类 $(ToolSetGeneratedDir)GeneratedTools.g.cs" />
+  </Target>
+</Project>

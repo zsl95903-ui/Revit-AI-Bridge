@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>RevitAi.Engine.Abstractions</RootNamespace>
+    <AssemblyName>RevitAi.Engine.Abstractions</AssemblyName>
+  </PropertyGroup>
+</Project>

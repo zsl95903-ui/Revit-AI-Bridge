@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>RevitAi.Engine.Revit</RootNamespace>
+    <AssemblyName>RevitAi.Engine.Revit</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RevitInstallDir Condition="'$(RevitInstallDir)' == ''">C:\Program Files\Autodesk\Revit 2027</RevitInstallDir>
+    <!-- RevitAPIUI 会带出大量 APIxxx.dll 的重复引用告警，这里统一压掉 -->
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Engine.Abstractions\RevitAi.Engine.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.Core\RevitAi.Engine.Core.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.ToolContracts\RevitAi.Engine.ToolContracts.csproj" />
+    <!-- RevitToolSet：120 个生成的工具类 + 实现注册表 + 回退引擎 -->
+    <ProjectReference Include="..\RevitToolSet\RevitToolSet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Revit API 只能以二进制引用（厂商侧同样如此） -->
+    <Reference Include="RevitAPI">
+      <HintPath>$(RevitInstallDir)\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>$(RevitInstallDir)\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

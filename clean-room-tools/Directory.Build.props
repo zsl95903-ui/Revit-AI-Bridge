@@ -1,0 +1,19 @@
+<Project>
+  <!--
+    构建产物一律重定向到 %TEMP%，原因：本机 Documents 目录受 Windows Defender
+    「受控文件夹访问」保护，pwsh/dotnet 对该目录只有读权限（写/改名/删除会被拒绝）。
+    源码留在工作区，编译中间件与输出走 TEMP。
+  -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(TEMP)\revitai-engine-poc\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(TEMP)\revitai-engine-poc\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <RestorePackagesPath>$(TEMP)\revitai-engine-poc\packages\</RestorePackagesPath>
+    <NuGetAudit>false</NuGetAudit>
+    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+</Project>

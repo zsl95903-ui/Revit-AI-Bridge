@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>RevitAi.Engine.Addin</RootNamespace>
+    <AssemblyName>RevitAi.Engine.Addin</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RevitInstallDir Condition="'$(RevitInstallDir)' == ''">C:\Program Files\Autodesk\Revit 2027</RevitInstallDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Engine.Abstractions\RevitAi.Engine.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.Core\RevitAi.Engine.Core.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.ToolContracts\RevitAi.Engine.ToolContracts.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.Revit\RevitAi.Engine.Revit.csproj" />
+    <ProjectReference Include="..\RevitToolSet\RevitToolSet.csproj" />
+    <ProjectReference Include="..\RevitToolSet.Implementations\RevitToolSet.Implementations.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>$(RevitInstallDir)\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>$(RevitInstallDir)\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="RevitAi.Engine.addin" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

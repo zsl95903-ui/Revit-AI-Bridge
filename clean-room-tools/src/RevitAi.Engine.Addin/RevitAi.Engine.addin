@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Revit AI Engine (PoC)</Name>
+    <Assembly>RevitAiEngine.PoC\RevitAi.Engine.Addin.dll</Assembly>
+    <AddInId>3f1c8a52-9d1e-4a5b-8f2a-0c7b6d4e91aa</AddInId>
+    <FullClassName>RevitAi.Engine.Addin.EngineApplication</FullClassName>
+    <VendorId>REVAIPOC</VendorId>
+    <VendorDescription>Revit AI Engine PoC - clean-room engine reimplementation</VendorDescription>
+  </AddIn>
+</RevitAddIns>

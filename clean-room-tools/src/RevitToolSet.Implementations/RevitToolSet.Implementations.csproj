@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>RevitToolSet.Implementations</RootNamespace>
+    <AssemblyName>RevitToolSet.Implementations</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 刻意不引用 RevitAPI：工具实现只依赖抽象服务契约，因此可以被冒烟测试直接执行 -->
+    <ProjectReference Include="..\RevitAi.Engine.Abstractions\RevitAi.Engine.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Engine.Core\RevitAi.Engine.Core.csproj" />
+  </ItemGroup>
+</Project>

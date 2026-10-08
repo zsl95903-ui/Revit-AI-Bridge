@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Revit AI</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <span class="brand">RevitAi助手</span>
+  <span id="chip" class="chip">未就绪</span>
+  <span class="grow"></span>
+  <button id="btn-tools" class="ghost">工具</button>
+  <button id="btn-settings" class="ghost">设置</button>
+</header>
+
+<main id="log">
+  <div class="empty" id="empty">
+    <p>配置好模型接口后，直接描述你要 Revit 做的事。</p>
+    <p class="dim">例如：读取当前文档，把所有标高列出来</p>
+  </div>
+</main>
+
+<footer>
+  <div id="attachments" class="attach-row"></div>
+  <div class="input-row">
+    <textarea id="input" rows="3" placeholder="描述任务… Enter 发送 / Shift+Enter 换行"></textarea>
+    <div class="actions">
+      <button id="btn-send" class="primary">发送</button>
+      <div class="row2">
+        <button id="btn-attach" class="ghost" title="添加附件">添加文件</button>
+        <button id="btn-stop" class="ghost" disabled>停止</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="modal" class="overlay hidden">
+  <div class="dialog">
+    <h2>模型接口</h2>
+
+    <label>API URL
+      <input id="f-url" spellcheck="false" placeholder="https://api.deepseek.com/v1">
+    </label>
+
+    <label>API Key
+      <input id="f-key" type="password" spellcheck="false" placeholder="sk-...">
+    </label>
+
+    <label>模型
+      <input id="f-model" spellcheck="false" placeholder="deepseek-chat">
+    </label>
+
+    <p class="hint">
+      任何 OpenAI 兼容的 <code>/chat/completions</code> 端点都可用。<br>
+      DeepSeek：URL <code>https://api.deepseek.com/v1</code>，模型 <code>deepseek-chat</code>
+      或 <code>deepseek-reasoner</code>。<br>
+      URL 填到 base 即可，不要带 <code>/chat/completions</code>。
+    </p>
+
+    <div class="row">
+      <button id="btn-test">测试连接</button>
+      <button id="btn-save" class="primary">保存</button>
+      <span class="grow"></span>
+      <button id="btn-close" class="ghost">关闭</button>
+    </div>
+
+    <pre id="test-out" class="output"></pre>
+  </div>
+</div>
+
+<div id="drawer" class="drawer hidden">
+  <div class="drawer-head">
+    <strong>可用工具</strong>
+    <span id="tool-count" class="dim"></span>
+    <span class="grow"></span>
+    <button id="btn-drawer-close" class="ghost">关闭</button>
+  </div>
+  <input id="tool-filter" placeholder="过滤…" spellcheck="false">
+  <div id="tool-list" class="tool-list"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

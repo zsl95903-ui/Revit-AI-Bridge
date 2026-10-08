@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>RevitAi.Engine.SmokeTests</RootNamespace>
+    <AssemblyName>RevitAi.Engine.SmokeTests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\RevitAi.Engine.Abstractions\RevitAi.Engine.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\RevitAi.Engine.Core\RevitAi.Engine.Core.csproj" />
+    <ProjectReference Include="..\..\src\RevitAi.Engine.ToolContracts\RevitAi.Engine.ToolContracts.csproj" />
+    <!-- 工具实现（不依赖 Revit），让冒烟测试能直接执行真实现 -->
+    <ProjectReference Include="..\..\src\RevitToolSet.Implementations\RevitToolSet.Implementations.csproj" />
+  </ItemGroup>
+</Project>

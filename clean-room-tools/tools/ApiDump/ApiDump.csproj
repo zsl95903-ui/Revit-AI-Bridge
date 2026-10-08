@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 开发辅助工具：反射打印 RevitAPI 真实签名，避免重写工具时反复猜测 API。
+       不属于构建链（build.ps1 只构建 ToolSetGenerator / Addin / SmokeTests）。
+       具体用法见 Program.cs 顶部注释：按类型查成员，或做全库成员搜索。 -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>ApiDump</AssemblyName>
+    <RootNamespace>ApiDump</RootNamespace>
+  </PropertyGroup>
+
+</Project>
