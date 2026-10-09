@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="RevitAi.UI.Views.Controls.CodeSnippetLibraryControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:RevitAi.UI.Views.Controls" xmlns:vm="clr-namespace:RevitAi.UI.ViewModels" xmlns:conv="clr-namespace:RevitAi.UI.Converters" xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf" Background="#FFF9F9F9">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+      <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+      <local:BoolToViewModeIconConverter x:Key="BoolToViewModeIconConverter" />
+      <local:BoolToViewModeToolTipConverter x:Key="BoolToViewModeToolTipConverter" />
+      <DataTemplate x:Key="CompactViewTemplate" DataType="vm:CodeSnippetItemViewModel">
+        <Border Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="6" Padding="8,6" Margin="0,0,8,8" Cursor="Hand" Width="120" Height="80">
+          <UIElement.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.ExecuteSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+          </UIElement.InputBindings>
+          <FrameworkElement.Style>
+            <Style TargetType="{x:Type Border}">
+              <Style.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#FFF5F5F5" />
+                  <Setter Property="BorderBrush" Value="#FF0078D4" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </FrameworkElement.Style>
+          <StackPanel>
+            <emoji:TextBlock TextBlock.FontSize="24" FrameworkElement.HorizontalAlignment="Center" FrameworkElement.Margin="0,0,0,4" emoji:TextBlock.Text="{Binding NameEmoji}" />
+            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#FF333333" TextWrapping="Wrap" TextAlignment="Center" TextTrimming="CharacterEllipsis" MaxHeight="40" FontFamily="Microsoft YaHei UI, Microsoft YaHei, SimHei" Text="{Binding NameText}" />
+          </StackPanel>
+        </Border>
+      </DataTemplate>
+      <DataTemplate x:Key="CardViewTemplate" DataType="vm:CodeSnippetItemViewModel">
+        <Border Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,10" Cursor="Hand" HorizontalAlignment="Stretch">
+          <UIElement.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.ExecuteSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
+          </UIElement.InputBindings>
+          <FrameworkElement.Style>
+            <Style TargetType="{x:Type Border}">
+              <Style.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#FFF5F5F5" />
+                  <Setter Property="BorderBrush" Value="#FF0078D4" />
+                  <Setter Property="BorderThickness" Value="1" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </FrameworkElement.Style>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Row="0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <emoji:TextBlock TextBlock.FontSize="16" TextBlock.FontWeight="SemiBold" FrameworkElement.VerticalAlignment="Center" FrameworkElement.Margin="0,0,4,0" emoji:TextBlock.Text="{Binding NameEmoji}" />
+                <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="#FF333333" TextWrapping="Wrap" FontFamily="Microsoft YaHei UI, Microsoft YaHei, SimHei" VerticalAlignment="Center" Text="{Binding NameText}" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+                <Button Width="28" Height="28" ToolTip="上移" Margin="0,0,4,0" Command="{Binding DataContext.MoveSnippetUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Visibility="{Binding DataContext.IsSortMode, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FF2196F3" />
+                      <Setter Property="Foreground" Value="#FFFFFFFF" />
+                      <Setter Property="BorderThickness" Value="0" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FF1976D2" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="↑" FontSize="14" FontWeight="Bold" />
+                </Button>
+                <Button Width="28" Height="28" ToolTip="下移" Margin="0,0,4,0" Command="{Binding DataContext.MoveSnippetDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Visibility="{Binding DataContext.IsSortMode, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FF2196F3" />
+                      <Setter Property="Foreground" Value="#FFFFFFFF" />
+                      <Setter Property="BorderThickness" Value="0" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FF1976D2" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="↓" FontSize="14" FontWeight="Bold" />
+                </Button>
+                <Button Width="32" Height="28" ToolTip="执行此代码片段" Margin="0,0,4,0" Command="{Binding DataContext.ExecuteSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FF4CAF50" />
+                      <Setter Property="Foreground" Value="#FFFFFFFF" />
+                      <Setter Property="BorderThickness" Value="0" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FF45A049" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="▶" FontSize="12" FontWeight="Bold" />
+                </Button>
+                <Button Width="32" Height="28" ToolTip="导出此片段" Margin="0,0,4,0" Command="{Binding DataContext.ExportSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FFF0F0F0" />
+                      <Setter Property="Foreground" Value="#FF666666" />
+                      <Setter Property="BorderThickness" Value="1" />
+                      <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FFE0E0E0" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="⬆️" FontSize="12" />
+                </Button>
+                <Button Width="32" Height="28" ToolTip="删除此片段" Margin="0,0,4,0" Command="{Binding DataContext.DeleteSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FFF0F0F0" />
+                      <Setter Property="Foreground" Value="#FFF44336" />
+                      <Setter Property="BorderThickness" Value="1" />
+                      <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FFEBEE" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="🗑️" FontSize="12" />
+                </Button>
+                <Button Width="32" Height="28" ToolTip="上传到代码市场" Command="{Binding DataContext.UploadSnippetToMarketCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="#FF9C27B0" />
+                      <Setter Property="Foreground" Value="#FFFFFFFF" />
+                      <Setter Property="BorderThickness" Value="0" />
+                      <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FF7B1FA2" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                  <TextBlock Text="☁️" FontSize="12" />
+                </Button>
+              </StackPanel>
+            </Grid>
+            <TextBlock Grid.Row="1" FontSize="12" Foreground="#FF666666" TextWrapping="Wrap" Margin="0,6,0,0" Text="{Binding Description}" />
+            <Grid Row="2" Margin="0,8,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" FontSize="11" Foreground="#FF0078D4" TextWrapping="Wrap" Text="{Binding TagsDisplay}" />
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+                <TextBlock FontSize="10" Foreground="#FF999999" VerticalAlignment="Center" Text="{Binding CreatedAtDisplay}" />
+                <TextBlock Text=" • " FontSize="10" Foreground="#FF999999" VerticalAlignment="Center" Margin="6,0" />
+                <TextBlock FontSize="10" Foreground="#FF999999" VerticalAlignment="Center" Text="{Binding UseCountDisplay}" />
+              </StackPanel>
+            </Grid>
+          </Grid>
+        </Border>
+      </DataTemplate>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" Padding="15,10" Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="0,0,0,1">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Column="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="0" Text="🔍" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0" />
+          <Border Grid.Column="1" BorderBrush="#FFCCCCCC" BorderThickness="1" CornerRadius="4" Background="#FFFFFFFF">
+            <TextBox Padding="10,8" FontSize="13" BorderThickness="0" Background="#00FFFFFF" Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}">
+              <FrameworkElement.Style>
+                <Style TargetType="{x:Type TextBox}">
+                  <Style.Triggers>
+                    <Trigger Property="Text" Value="">
+                      <Setter Property="Foreground" Value="#FFCCCCCC" />
+                    </Trigger>
+                    <Trigger Property="UIElement.IsFocused" Value="True">
+                      <Setter Property="Foreground" Value="#FF333333" />
+                    </Trigger>
+                  </Style.Triggers>
+                </Style>
+              </FrameworkElement.Style>
+            </TextBox>
+          </Border>
+        </Grid>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+          <Button Width="36" Height="32" Margin="0,0,6,0" Command="{Binding ToggleViewModeCommand}" ToolTip="{Binding IsCompactView, Converter={StaticResource BoolToViewModeToolTipConverter}}">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FFF0F0F0" />
+                <Setter Property="Foreground" Value="#FF666666" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                  <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE0E0E0" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </FrameworkElement.Style>
+            <TextBlock FontSize="14" Text="{Binding IsCompactView, Converter={StaticResource BoolToViewModeIconConverter}}" />
+          </Button>
+          <Button Width="36" Height="32" ToolTip="切换排序模式" Margin="0,0,6,0" Command="{Binding ToggleSortModeCommand}">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FFF0F0F0" />
+                <Setter Property="Foreground" Value="#FF666666" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                  <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE0E0E0" />
+                  </Trigger>
+                  <DataTrigger Value="True" Binding="{Binding IsSortMode}">
+                    <Setter Property="Background" Value="#FF0078D4" />
+                    <Setter Property="Foreground" Value="#FFFFFFFF" />
+                    <Setter Property="BorderBrush" Value="#FF005A9E" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </FrameworkElement.Style>
+            <TextBlock Text="🔢" FontSize="14" />
+          </Button>
+          <Button Width="36" Height="32" ToolTip="导入代码片段" Margin="0,0,6,0" Command="{Binding ImportSnippetsCommand}">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FFF0F0F0" />
+                <Setter Property="Foreground" Value="#FF666666" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                  <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE0E0E0" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </FrameworkElement.Style>
+            <TextBlock Text="📥" FontSize="14" />
+          </Button>
+          <Button Width="36" Height="32" ToolTip="导出代码片段库" Command="{Binding ExportAllSnippetsCommand}">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FFF0F0F0" />
+                <Setter Property="Foreground" Value="#FF666666" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#FFCCCCCC" />
+                <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                  <Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFE0E0E0" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </FrameworkElement.Style>
+            <TextBlock Text="⬆️" FontSize="14" />
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+    <Grid Row="1">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40,20" Visibility="{Binding HasSnippets, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+        <TextBlock Text="📋" FontSize="64" HorizontalAlignment="Center" Opacity="0.3" Margin="0,0,0,20" />
+        <TextBlock Text="代码片段库为空" FontSize="18" FontWeight="SemiBold" Foreground="#FF666666" HorizontalAlignment="Center" Margin="0,0,0,10" />
+        <TextBlock Text="在 AI 对话中生成的代码可以保存到本地" FontSize="13" Foreground="#FF999999" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,8" TextAlignment="Center" />
+        <TextBlock Text="保存后可以直接点击使用，无需重新生成" FontSize="13" Foreground="#FF999999" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" TextAlignment="Center" />
+        <Border Background="#FFF5F5F5" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="8" Padding="20,15" Margin="20,0">
+          <StackPanel>
+            <TextBlock Text="💡 示例命令" FontSize="12" FontWeight="SemiBold" Foreground="#FF666666" HorizontalAlignment="Center" Margin="0,0,0,10" />
+            <TextBlock Text="「使用代码执行工具，使用代码将所有的墙设置为红色」" FontSize="11" Foreground="#FF0078D4" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="15,10" Visibility="{Binding IsCompactView, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+        <ItemsControl ItemTemplate="{StaticResource CardViewTemplate}" HorizontalAlignment="Stretch" ItemsSource="{Binding Snippets}">
+          <ItemsControl.ItemContainerStyle>
+            <Style TargetType="{x:Type ContentPresenter}">
+              <Setter Property="HorizontalAlignment" Value="Stretch" />
+            </Style>
+          </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+      </ScrollViewer>
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="15,10" Visibility="{Binding IsCompactView, Converter={StaticResource BoolToVisibilityConverter}}">
+        <ItemsControl ItemTemplate="{StaticResource CompactViewTemplate}" ItemsSource="{Binding Snippets}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</UserControl>

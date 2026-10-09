@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.FeedbackListWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" Title="我的反馈" Width="700" Height="650" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+      <Style x:Key="DeleteButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#00FFFFFF" />
+        <Setter Property="Foreground" Value="#FF999999" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="0" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFEBEE" />
+            <Setter Property="Foreground" Value="#FFF44336" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="30">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid Row="0" Margin="0,0,0,20">
+      <TextBlock Text="我的反馈" FontSize="22" FontWeight="Bold" Foreground="#FF2196F3" />
+      <Button Content="+ 新建反馈" HorizontalAlignment="Right" Width="100" Height="36" FontSize="13" Background="#FF2196F3" Foreground="#FFFFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding NewFeedbackCommand}" />
+    </Grid>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <StackPanel>
+        <ItemsControl ItemsSource="{Binding Feedbacks}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Border Background="#FFFFFFFF" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,15">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                  </Grid.RowDefinitions>
+                  <Grid Row="0" Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontSize="15" FontWeight="SemiBold" Foreground="#333333" VerticalAlignment="Center" Text="{Binding Title}" />
+                    <Border Grid.Column="1" Padding="8,4" CornerRadius="4" Margin="0,0,10,0" VerticalAlignment="Center" Background="{Binding StatusBrush}">
+                      <StackPanel Orientation="Horizontal" Margin="0,-2,0,-2">
+                        <TextBlock FontSize="11" Margin="0,0,4,0" Foreground="#FFFFFFFF" Text="{Binding StatusIcon}" />
+                        <TextBlock FontSize="11" FontWeight="Medium" Foreground="#FFFFFFFF" Text="{Binding StatusText}" />
+                      </StackPanel>
+                    </Border>
+                    <Button Grid.Column="2" Content="🗑️ 删除" Style="{StaticResource DeleteButton}" VerticalAlignment="Center" Command="{Binding DataContext.DeleteFeedbackCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Id}" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" FontSize="13" Foreground="#FF666666" TextWrapping="Wrap" Margin="0,0,0,12" Text="{Binding ContentPreview}" />
+                  <ItemsControl Grid.Row="2" Margin="0,0,0,12" ItemsSource="{Binding Attachments}" Visibility="{Binding HasAttachments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Border Background="#F5F5F5" Padding="8,5" CornerRadius="4" Margin="0,0,0,5">
+                          <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📎" FontSize="12" Margin="0,0,6,0" />
+                            <TextBlock FontSize="12" Foreground="#FF333333" Text="{Binding FileName}" />
+                            <TextBlock Text=" (" Foreground="#FF999999" FontSize="12" />
+                            <TextBlock Foreground="#FF999999" FontSize="12" Text="{Binding FileSizeText}" />
+                            <TextBlock Text=")" Foreground="#FF999999" FontSize="12" />
+                          </StackPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Grid.Row="3" FontSize="11" Foreground="#FF999999" Margin="0,0,0,12" Text="{Binding CreatedAtText}" />
+                  <Border Grid.Row="4" Background="#E8F5E9" Padding="15" CornerRadius="8" Visibility="{Binding HasReply, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                      <TextBlock Text="💬 管理员回复" FontSize="12" FontWeight="SemiBold" Foreground="#2E7D32" Margin="0,0,0,8" />
+                      <TextBlock FontSize="13" TextWrapping="Wrap" Foreground="#333333" Margin="8,0,0,0" Text="{Binding AdminReply}" />
+                      <TextBlock FontSize="11" Foreground="#FF999999" Margin="8,8,0,0" Text="{Binding AdminReplyAtText}" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40" CornerRadius="10" Background="#F9F9F9" Visibility="{Binding HasNoFeedbacks, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <StackPanel>
+            <TextBlock Text="💬" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15" />
+            <TextBlock Text="暂无反馈记录" FontSize="14" Foreground="#FF999999" HorizontalAlignment="Center" />
+            <Button Content="提交第一个反馈" HorizontalAlignment="Center" Margin="0,15,0,0" Width="120" Height="36" Background="#FF2196F3" Foreground="#FFFFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding NewFeedbackCommand}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Window>

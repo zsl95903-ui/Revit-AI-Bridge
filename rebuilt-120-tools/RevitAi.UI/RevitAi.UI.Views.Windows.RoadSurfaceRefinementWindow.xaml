@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.RoadSurfaceRefinementWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" Title="精修路基路面" Height="550" Width="350" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" Topmost="True" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF0277BD" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE1F5FE" />
+      <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#FF01579B" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="BorderBrush" Color="#FFE0E0E0" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="3">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SuccessButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource SuccessBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FF388E3C" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="16">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0">
+      <TextBlock Text="精修路基路面" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,8" />
+      <TextBlock Text="依据CAD图纸，生成空心模型，实现精确剪切道路模型。" FontSize="11" Foreground="#99000000" Margin="0,0,0,8" />
+    </StackPanel>
+    <StackPanel Grid.Row="1">
+      <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,8">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="32" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Column="0" Width="24" Height="24" Margin="0,0,8,0">
+              <Ellipse Fill="{StaticResource PrimaryBrush}" />
+              <TextBlock Text="1" Foreground="#FFFFFFFF" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <TextBlock Grid.Column="1" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="绘制楼板" VerticalAlignment="Center" />
+          </Grid>
+          <TextBlock Text="依据 CAD 图纸，手动创建需裁剪部分的楼板模型" FontSize="11" Foreground="#99000000" Margin="32,4,0,0" />
+        </StackPanel>
+      </Border>
+      <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,8">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="32" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Column="0" Width="24" Height="24" Margin="0,0,8,0">
+              <Ellipse Fill="{StaticResource PrimaryBrush}" />
+              <TextBlock Text="2" Foreground="#FFFFFFFF" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <TextBlock Grid.Column="1" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="生成空心" VerticalAlignment="Center" Margin="0,0,6,0" />
+          </Grid>
+          <TextBlock Text="选择楼板，在同一位置生成空心族" FontSize="11" Foreground="#99000000" Margin="32,4,0,0" />
+          <StackPanel Margin="32,8,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Content="选择楼板" Style="{StaticResource PrimaryButton}" Width="80" Command="{Binding SelectFloorCommand}" />
+              <Button Content="生成空心" Style="{StaticResource SuccessButton}" Width="80" Margin="6,0,0,0" Command="{Binding ExecuteStep2Command}" IsEnabled="{Binding HasSelectedFloor}" />
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Right" Margin="0,4,0,0" FontSize="11" Foreground="{StaticResource SuccessBrush}" Text="{Binding SelectedFloorName}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+      <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Background="#FFFFFFFF">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="32" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Column="0" Width="24" Height="24" Margin="0,0,8,0">
+              <Ellipse Fill="{StaticResource SuccessBrush}" />
+              <TextBlock Text="3" Foreground="#FFFFFFFF" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+            <TextBlock Grid.Column="1" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="批量剪切" VerticalAlignment="Center" Margin="0,0,6,0" />
+          </Grid>
+          <TextBlock Text="选择空心族和需剪切的族类型，实现批量剪切操作" FontSize="11" Foreground="#99000000" Margin="32,4,0,0" />
+          <StackPanel Margin="32,8,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Content="选择空心族" Style="{StaticResource PrimaryButton}" Width="80" Command="{Binding SelectVoidFamilyCommand}" />
+              <Button Content="选择族类型" Style="{StaticResource PrimaryButton}" Width="80" Margin="6,0,0,0" Command="{Binding SelectCategoriesCommand}" />
+              <Button Content="执行剪切" Style="{StaticResource SuccessButton}" Width="80" Margin="6,0,0,0" Command="{Binding ExecuteStep3Command}" IsEnabled="{Binding CanExecuteCut}" />
+            </StackPanel>
+            <CheckBox Content="剪切相同族类型的所有实例" HorizontalAlignment="Right" Margin="0,4,0,0" FontSize="11" Foreground="#99000000" IsChecked="{Binding CutAllInstances}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+              <ItemsControl ItemsSource="{Binding SelectedCategories}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="{StaticResource SuccessBrush}" Padding="3,1" CornerRadius="2" Margin="0,0,2,0">
+                      <TextBlock FontSize="9" Foreground="#FFFFFFFF" Text="{Binding}" />
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <TextBlock VerticalAlignment="Center" Margin="0,0,0,0" FontSize="11" Foreground="#99000000" Text="{Binding SelectedCategoryCountText}" />
+              <TextBlock VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11" Foreground="#99000000" Text="{Binding SelectedCategoryInstanceCountText}" />
+              <TextBlock VerticalAlignment="Center" Margin="6,0,0,0" FontSize="11" Foreground="{StaticResource SuccessBrush}" Text="{Binding SelectedVoidFamilyName}" />
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+    <Border Grid.Row="2" Background="{StaticResource PrimaryLightBrush}" Padding="10,5" CornerRadius="3" Margin="0,8,0,0">
+      <TextBlock FontSize="11" Foreground="{StaticResource PrimaryDarkBrush}" Text="{Binding OperationMessage}" />
+    </Border>
+    <Button Grid.Row="3" Content="关闭" Style="{StaticResource SecondaryButton}" Width="70" HorizontalAlignment="Right" Margin="0,6,0,0" Command="{Binding CloseWindowCommand}" />
+    <Border Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+      <TextBlock Text="正在处理..." FontSize="13" Foreground="#FFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+  </Grid>
+</Window>

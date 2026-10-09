@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>RevitAi.Revit</AssemblyName>
+    <RootNamespace>RevitAi</RootNamespace>
+    <Version>4.1.0</Version>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Abstractions\RevitAi.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Core\RevitAi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="-de1d04de-3e21-4984-940f-aac5811c95c6-" />
+    <EmbeddedResource Include="-de1d04de-3e21-4984-940f-aac5811c95c6-" LogicalName="{de1d04de-3e21-4984-940f-aac5811c95c6}" />
+  </ItemGroup>
+
+</Project>
+

@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.EditBridgeComponentsWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="编辑桥梁部件配置" Height="700" Width="1400" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" Topmost="True" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" xmlns:converters="clr-namespace:RevitAi.UI.Converters" />
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF0277BD" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE1F5FE" />
+      <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#FF01579B" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="BorderBrush" Color="#FFE0E0E0" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+      <SolidColorBrush x:Key="DangerBrush" Color="#FFE53935" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="DangerButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFD32F2F" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="ModernDataGrid" TargetType="{x:Type DataGrid}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="DataGrid.GridLinesVisibility" Value="All" />
+        <Setter Property="DataGrid.HorizontalGridLinesBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="DataGrid.VerticalGridLinesBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="DataGrid.RowBackground" Value="#FFFFFFFF" />
+        <Setter Property="DataGrid.AlternatingRowBackground" Value="#FFF9F9F9" />
+        <Setter Property="DataGrid.HeadersVisibility" Value="Column" />
+        <Setter Property="DataGrid.AutoGenerateColumns" Value="False" />
+        <Setter Property="DataGrid.CanUserAddRows" Value="False" />
+        <Setter Property="DataGrid.CanUserDeleteRows" Value="False" />
+        <Setter Property="DataGrid.SelectionMode" Value="Single" />
+        <Setter Property="DataGrid.SelectionUnit" Value="FullRow" />
+        <Setter Property="FontSize" Value="12" />
+      </Style>
+      <Style x:Key="GridTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="4,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="#00FFFFFF" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsFocused" Value="True">
+            <Setter Property="Background" Value="#FFFFFFFF" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="16">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid Row="0" Margin="0,0,0,12">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0">
+        <TextBlock Text="编辑桥梁部件配置" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" />
+        <TextBlock FontSize="14" Foreground="#99000000" Margin="0,4,0,0">
+          <Run Text="路线：" /> <Run FontWeight="SemiBold" Text="{Binding RoadName, Mode=OneWay}" /></TextBlock>
+      </StackPanel>
+      <Button Grid.Column="1" Content="添加配置项" Style="{StaticResource PrimaryButton}" Background="{StaticResource SuccessBrush}" Command="{Binding AddConfigurationCommand}" />
+    </Grid>
+    <Border Grid.Row="1" Background="{StaticResource PrimaryLightBrush}" Padding="12,8" CornerRadius="4" Margin="0,0,0,12">
+      <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource PrimaryDarkBrush}">
+        <Run Text="配置路线各个桩位的桥梁部件和桩基定位信息。" />
+      </TextBlock>
+    </Border>
+    <TabControl Grid.Row="2" Background="#00FFFFFF" BorderThickness="0">
+      <TabItem Header="🔧 部件配置" FontSize="14" Padding="12,8">
+        <DataGrid Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding ComponentConfigurations}">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="编号" Width="50" IsReadOnly="True" Binding="{Binding Number, Mode=OneWay}" />
+            <DataGridTextColumn Header="桩号" Width="100" Binding="{Binding Station, UpdateSourceTrigger=PropertyChanged}" />
+            <DataGridTemplateColumn Header="桥梁类型" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.BridgeTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding BridgeType, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="桥梁参数" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBox Style="{StaticResource GridTextBox}" Text="{Binding BridgeParameters, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="基础类型" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.FoundationTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding FoundationType, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="基础参数" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBox Style="{StaticResource GridTextBox}" Text="{Binding FoundationParameters, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="墩柱类型" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.PierTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding PierType, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="墩柱参数" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBox Style="{StaticResource GridTextBox}" Text="{Binding PierParameters, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="盖梁类型" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.BeamTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding BeamType, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="盖梁参数" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBox Style="{StaticResource GridTextBox}" Text="{Binding BeamParameters, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="支座类型" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.BearingTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding BearingType, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="支座参数" Width="150">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBox Style="{StaticResource GridTextBox}" Text="{Binding BearingParameters, UpdateSourceTrigger=PropertyChanged}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="操作" Width="80">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <Button Content="删除" Style="{StaticResource DangerButton}" Padding="8" FontSize="12" Margin="4" Command="{Binding DataContext.RemoveConfigurationCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+      </TabItem>
+      <TabItem Header="📍 桩定位" FontSize="14" Padding="12,8">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Border Grid.Row="0" Background="{StaticResource PrimaryLightBrush}" Padding="12,8" CornerRadius="4" Margin="0,0,0,12">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" FontSize="13">
+                  <Run Text="默认桩类型：" />
+                </TextBlock>
+                <ComboBox DisplayMemberPath="Name" Width="200" Padding="6" FontSize="13" ItemsSource="{Binding PileTypes}" SelectedItem="{Binding DefaultPileType, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock VerticalAlignment="Center" Margin="16,0,8,0" FontSize="13" Foreground="#99000000">
+                  <Run Text="|" />
+                </TextBlock>
+                <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" FontSize="13">
+                  <Run Text="已配置 " /> <Run FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Text="{Binding PilePositions.Count, Mode=OneWay}" /> <Run Text=" 个桩位" /></TextBlock>
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="导入Excel" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Padding="12" FontSize="13" Command="{Binding ImportPilePositionsExcelCommand}" />
+                <Button Content="添加桩位" Style="{StaticResource PrimaryButton}" Background="{StaticResource SuccessBrush}" Command="{Binding AddPilePositionCommand}" />
+              </StackPanel>
+            </Grid>
+          </Border>
+          <DataGrid Grid.Row="1" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ItemsSource="{Binding PilePositions}">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="编号" Width="50" IsReadOnly="True" Binding="{Binding Number, Mode=OneWay}" />
+              <DataGridTextColumn Header="墩台编号" Width="100" Binding="{Binding PierNumber, UpdateSourceTrigger=PropertyChanged}" />
+              <DataGridTextColumn Header="桩基编号" Width="100" Binding="{Binding PileNumber, UpdateSourceTrigger=PropertyChanged}" />
+              <DataGridTemplateColumn Header="桩类型" Width="200">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <ComboBox DisplayMemberPath="Name" Padding="4" ItemsSource="{Binding DataContext.PileTypes, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding PileType, UpdateSourceTrigger=PropertyChanged}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn Header="X坐标" Width="120" Binding="{Binding XCoordinate, UpdateSourceTrigger=PropertyChanged}" />
+              <DataGridTextColumn Header="Y坐标" Width="120" Binding="{Binding YCoordinate, UpdateSourceTrigger=PropertyChanged}" />
+              <DataGridTextColumn Header="桩长" Width="100" Binding="{Binding PileLength, UpdateSourceTrigger=PropertyChanged}" />
+              <DataGridTemplateColumn Header="操作" Width="80">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <Button Content="删除" Style="{StaticResource DangerButton}" Padding="8" FontSize="12" Margin="4" Command="{Binding DataContext.RemovePilePositionCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Grid>
+      </TabItem>
+    </TabControl>
+    <Border Grid.Row="3" Background="{StaticResource PrimaryLightBrush}" Padding="12,8" CornerRadius="4" Margin="0,12,0,0">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <TextBlock VerticalAlignment="Center" Margin="0,0,20,0" FontSize="13">
+          <Run Text="已配置 " /> <Run FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Text="{Binding ComponentConfigurations.Count, Mode=OneWay}" /> <Run Text=" 个桩位" /></TextBlock>
+        <Button Content="取消" Style="{StaticResource SecondaryButton}" Margin="0,0,12,0" Command="{Binding CancelCommand}" />
+        <Button Content="保存" Style="{StaticResource PrimaryButton}" Background="{StaticResource SuccessBrush}" Command="{Binding SaveCommand}" />
+      </StackPanel>
+    </Border>
+    <Border Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+      <TextBlock Text="正在保存..." FontSize="16" Foreground="#FFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Border>
+  </Grid>
+</Window>

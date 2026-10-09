@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>RevitAi.UI</AssemblyName>
+    <RootNamespace>RevitAi</RootNamespace>
+    <Version>4.1.0</Version>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Abstractions\RevitAi.Abstractions.csproj" />
+    <ProjectReference Include="..\RevitAi.Core\RevitAi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="map.html" />
+    <EmbeddedResource Include="map.html" LogicalName="RevitAi.UI.Resources.map.html" />
+  </ItemGroup>
+
+</Project>
+

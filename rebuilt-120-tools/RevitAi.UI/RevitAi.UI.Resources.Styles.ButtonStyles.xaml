@@ -1,0 +1,135 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <!-- ==================================== -->
+    <!-- 主要按钮样式 - Revit 蓝色 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitPrimaryButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="{StaticResource PrimaryHueMidBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+        <Setter Property="Padding" Value="16,8"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 次要按钮样式 - 轮廓按钮 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitSecondaryButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryHueMidBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="16,8"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 强调按钮样式 - Revit 橙色 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitAccentButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="{StaticResource SecondaryAccentBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+        <Setter Property="Padding" Value="16,8"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 文本按钮样式 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitTextButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryHueMidBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+        <Setter Property="Padding" Value="12,4"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource PrimaryHueLightBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource PrimaryHueMidBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 图标按钮样式 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitIconButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignBody}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="4"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 成功按钮样式 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitSuccessButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 警告按钮样式 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitWarningButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="{StaticResource WarningBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+    </Style>
+
+    <!-- ==================================== -->
+    <!-- 危险按钮样式 -->
+    <!-- ==================================== -->
+
+    <Style x:Key="RevitDangerButton"
+           TargetType="Button"
+           BasedOn="{StaticResource MaterialDesignRaisedButton}">
+        <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource MaterialDesignPaper}"/>
+        <Setter Property="Height" Value="36"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}"/>
+        <Setter Property="FontWeight" Value="{StaticResource FontWeightMedium}"/>
+    </Style>
+
+</ResourceDictionary>

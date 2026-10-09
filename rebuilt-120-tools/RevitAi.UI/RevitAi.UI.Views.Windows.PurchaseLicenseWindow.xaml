@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.PurchaseLicenseWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" WindowStartupLocation="CenterOwner" Title="购买授权" Width="600" Height="750" ResizeMode="NoResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" Topmost="True" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+      <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+      <converters:UrlToImageConverter x:Key="UrlToImageConverter" />
+      <converters:WechatHintTextConverter x:Key="WechatHintConverter" />
+      <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2196F3" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE3F2FD" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="WechatBrush" Color="#FF07C160" />
+      <SolidColorBrush x:Key="AlipayBrush" Color="#FF1677FF" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="UIElement.Opacity" Value="0.8" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#FFBDBDBD" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FF9E9E9E" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="LicenseOptionRadioButton" TargetType="{x:Type RadioButton}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="MinHeight" Value="80" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type RadioButton}">
+              <Border Name="RootElement" Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="1" Padding="10" CornerRadius="6">
+                <UIElement.Effect>
+                  <DropShadowEffect Color="#000000" BlurRadius="3" ShadowDepth="1" Opacity="0.08" />
+                </UIElement.Effect>
+                <ContentPresenter />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter TargetName="RootElement" Property="Border.BorderBrush" Value="{StaticResource PrimaryBrush}" />
+                  <Setter TargetName="RootElement" Property="Border.Background" Value="#FFF8FDFF" />
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                  <Setter TargetName="RootElement" Property="Border.BorderBrush" Value="{StaticResource PrimaryBrush}" />
+                  <Setter TargetName="RootElement" Property="Border.BorderThickness" Value="2" />
+                  <Setter TargetName="RootElement" Property="Border.Background" Value="#FFE3F2FD" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid>
+    <Grid Name="SelectionView">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Border Grid.Row="0" Background="{StaticResource PrimaryLightBrush}" Padding="16,12">
+        <TextBlock Text="选择授权套餐" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" />
+      </Border>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="16">
+        <StackPanel>
+          <TextBlock Text="授权时长" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,12" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="8" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="8" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="8" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <RadioButton Grid.Row="0" Grid.Column="0" Style="{StaticResource LicenseOptionRadioButton}" IsChecked="{Binding LicenseDurations[0].IsSelected, Mode=TwoWay}">
+              <StackPanel>
+                <TextBlock Text="1个月" FontSize="15" FontWeight="SemiBold" Foreground="#DD000000" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding LicenseDurations[0].Price, StringFormat=¥{0}}" />
+              </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Row="0" Grid.Column="2" Style="{StaticResource LicenseOptionRadioButton}" IsChecked="{Binding LicenseDurations[1].IsSelected, Mode=TwoWay}">
+              <StackPanel>
+                <TextBlock Text="1个季度" FontSize="15" FontWeight="SemiBold" Foreground="#DD000000" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding LicenseDurations[1].Price, StringFormat=¥{0}}" />
+              </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Row="0" Grid.Column="4" Style="{StaticResource LicenseOptionRadioButton}" IsChecked="{Binding LicenseDurations[2].IsSelected, Mode=TwoWay}">
+              <StackPanel>
+                <TextBlock Text="半年" FontSize="15" FontWeight="SemiBold" Foreground="#DD000000" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding LicenseDurations[2].Price, StringFormat=¥{0}}" />
+              </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Row="2" Grid.Column="0" Style="{StaticResource LicenseOptionRadioButton}" IsChecked="{Binding LicenseDurations[3].IsSelected, Mode=TwoWay}">
+              <StackPanel>
+                <TextBlock Text="1年" FontSize="15" FontWeight="SemiBold" Foreground="#DD000000" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding LicenseDurations[3].Price, StringFormat=¥{0}}" />
+              </StackPanel>
+            </RadioButton>
+            <RadioButton Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Style="{StaticResource LicenseOptionRadioButton}" IsChecked="{Binding LicenseDurations[4].IsSelected, Mode=TwoWay}">
+              <StackPanel>
+                <TextBlock Text="永久授权" FontSize="15" FontWeight="SemiBold" Foreground="#DD000000" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock FontSize="18" FontWeight="Bold" Foreground="#FF4CAF50" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding LicenseDurations[4].Price, StringFormat=¥{0}}" />
+              </StackPanel>
+            </RadioButton>
+          </Grid>
+          <Border Background="#FFF5F5F5" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,16,0,0">
+            <StackPanel>
+              <TextBlock Text="优惠码（可选）" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8" />
+              <Grid Visibility="{Binding AppliedPromotion, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Reverse}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="8" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox FontSize="13" Padding="8,6" VerticalContentAlignment="Center" Grid.Column="0" Text="{Binding PromotionCodeInput, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="应用" Width="60" Height="32" Grid.Column="2" Command="{Binding ApplyPromotionCodeCommand}">
+                  <FrameworkElement.Style>
+                    <Style BasedOn="{StaticResource PrimaryButton}" TargetType="{x:Type Button}">
+                      <Style.Triggers>
+                        <DataTrigger Value="True" Binding="{Binding IsValidatingPromoCode}">
+                          <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                </Button>
+                <Grid Width="60" Visibility="{Binding IsValidatingPromoCode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <ProgressBar IsIndeterminate="True" Height="32" />
+                </Grid>
+              </Grid>
+              <Border Background="#FFFDF2F2" BorderBrush="#FFD32F2F" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,4,0,0" Visibility="{Binding PromotionCodeError, Converter={StaticResource NullToVisibilityConverter}}">
+                <StackPanel>
+                  <Grid>
+                    <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#FFD32F2F">
+                      <Run Text="⚠ " /> <Run Text="优惠码无效" /></TextBlock>
+                  </Grid>
+                  <TextBlock FontSize="12" Foreground="#FFD32F2F" Margin="0,4,0,0" TextWrapping="Wrap" Text="{Binding PromotionCodeError}" />
+                </StackPanel>
+              </Border>
+              <Border Background="#FFECF5E9" BorderBrush="#FF4CAF50" BorderThickness="1" CornerRadius="4" Padding="12" Visibility="{Binding AppliedPromotion, Converter={StaticResource NullToVisibilityConverter}}">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Grid.Column="0">
+                    <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="#FF2E7D32">
+                      <Run Text="优惠码：" /> <Run FontWeight="Normal" Text="{Binding AppliedPromotion.Code}" /></TextBlock>
+                    <TextBlock FontSize="12" Foreground="#FF2E7D32" Margin="0,4,0,0">
+                      <Run Text="{Binding AppliedPromotion.Description}" /> <Run Text="，节省：¥" /> <Run Text="{Binding AppliedPromotion.SavedAmount, StringFormat={}{0:F2}}" /></TextBlock>
+                  </StackPanel>
+                  <Button Content="清除" Style="{StaticResource SecondaryButton}" Width="60" Height="28" FontSize="12" Grid.Column="1" Command="{Binding ClearPromotionCodeCommand}" />
+                </Grid>
+              </Border>
+            </StackPanel>
+          </Border>
+          <Border Background="{StaticResource PrimaryLightBrush}" Padding="16" CornerRadius="8" Margin="0,16,0,0">
+            <Grid>
+              <TextBlock Text="总价" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+              <TextBlock FontSize="24" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding TotalPrice, StringFormat=¥{0:F2}}" />
+            </Grid>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+      <Border Grid.Row="2" Padding="16,12">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="取消" Style="{StaticResource SecondaryButton}" Width="80" Height="32" Margin="0,0,12,0" Command="{Binding CancelCommand}" />
+          <Button Content="立即购买" Style="{StaticResource PrimaryButton}" Width="100" Height="32" Command="{Binding ConfirmPurchaseCommand}" />
+        </StackPanel>
+      </Border>
+    </Grid>
+    <Grid Name="PaymentView" Visibility="Collapsed">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Border Grid.Row="0" Background="{StaticResource PrimaryLightBrush}" Padding="16,12">
+        <Grid>
+          <Button Content="← 返回" Style="{StaticResource SecondaryButton}" Width="80" Height="28" FontSize="12" HorizontalAlignment="Left" Command="{Binding BackToSelectionCommand}" />
+          <TextBlock Text="扫码支付" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Center" />
+        </Grid>
+      </Border>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="16">
+        <StackPanel>
+          <Border Background="#FFF5F5F5" Padding="12" CornerRadius="4" Margin="0,0,0,16">
+            <StackPanel>
+              <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,0,0,4">
+                <Run Text="订单号: " /> <Run FontWeight="Normal" Text="{Binding PaymentOrderId}" /></TextBlock>
+              <TextBlock FontSize="13" FontWeight="SemiBold">
+                <Run Text="应付金额: " /> <Run FontSize="16" Foreground="{StaticResource PrimaryBrush}" Text="{Binding TotalPrice, StringFormat=¥{0:F2}}" /></TextBlock>
+            </StackPanel>
+          </Border>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="16" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="#FFFFFFFF" BorderBrush="{StaticResource AlipayBrush}" BorderThickness="2" CornerRadius="8" Padding="16">
+              <StackPanel>
+                <TextBlock Text="支付宝支付" FontSize="14" FontWeight="Bold" Foreground="{StaticResource AlipayBrush}" HorizontalAlignment="Center" Margin="0,0,0,12" />
+                <Image Width="180" Height="180" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding AlipayQrCodeUrl, Converter={StaticResource UrlToImageConverter}}" />
+                <TextBlock Text="请使用支付宝扫一扫" FontSize="11" Foreground="#FF666666" HorizontalAlignment="Center" />
+              </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Background="#FFFFFFFF" BorderBrush="{StaticResource WechatBrush}" BorderThickness="2" CornerRadius="8" Padding="16">
+              <StackPanel>
+                <TextBlock Text="微信支付" FontSize="14" FontWeight="Bold" Foreground="{StaticResource WechatBrush}" HorizontalAlignment="Center" Margin="0,0,0,12" />
+                <Grid>
+                  <Image Width="180" Height="180" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding WechatQrCodeUrl, Converter={StaticResource UrlToImageConverter}}" Visibility="{Binding ShowDeveloperQrCode, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                  <Image Width="180" Height="180" RenderOptions.BitmapScalingMode="HighQuality" Source="{Binding DeveloperQrCodeUrl, Converter={StaticResource UrlToImageConverter}}" Visibility="{Binding ShowDeveloperQrCode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </Grid>
+                <TextBlock FontSize="11" Foreground="#FF666666" HorizontalAlignment="Center" Text="{Binding ShowDeveloperQrCode, Converter={StaticResource WechatHintConverter}}" />
+              </StackPanel>
+            </Border>
+          </Grid>
+          <Border Background="#FFE3F2FD" Padding="12" CornerRadius="4" Margin="0,16,0,0" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock FontSize="12" Foreground="#FF1976D2" TextWrapping="Wrap" Text="{Binding LoadingText}" />
+          </Border>
+          <Border Background="#FFFFF3E0" Padding="12" CornerRadius="4" Margin="0,8,0,0">
+            <TextBlock FontSize="12" Foreground="#FFE65100" TextWrapping="Wrap">
+              <Run Text="支付成功后，授权将自动激活" />
+            </TextBlock>
+          </Border>
+          <Border Background="#FFFFEBEE" Padding="12" CornerRadius="4" Margin="0,8,0,0">
+            <StackPanel>
+              <TextBlock FontSize="12" Foreground="#FFD32F2F" TextWrapping="Wrap">
+                <Run Text="温馨提示：由于微信的风控机制，可能有支付不成功的情况，推荐使用支付宝。如遇支付问题，可以在这里联系开发者手动授权。" />
+              </TextBlock>
+              <Border Background="#00FFFFFF" Margin="0,4,0,0" Cursor="Hand" MouseEnter="LicenseDeveloperContact_MouseEnter" MouseLeave="LicenseDeveloperContact_MouseLeave">
+                <TextBlock Text="鼠标悬停查看开发者微信" FontSize="11" Foreground="#FF1976D2" TextDecorations="Underline" />
+              </Border>
+            </StackPanel>
+          </Border>
+          <Border Background="#FFFFF3E0" Padding="12" CornerRadius="4" Margin="0,8,0,0" Visibility="{Binding ShowDeveloperQrCode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBlock FontSize="12" Foreground="#FFE65100" TextWrapping="Wrap">
+              <Run Text="上方二维码已切换为开发者微信，扫码添加好友后说明购买授权即可" />
+            </TextBlock>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+      <Border Grid.Row="2" Padding="16,12">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="取消支付" Style="{StaticResource SecondaryButton}" Width="100" Height="32" Command="{Binding CancelPaymentCommand}" />
+        </StackPanel>
+      </Border>
+    </Grid>
+    <Grid RowSpan="3" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ProgressBar IsIndeterminate="True" Width="60" Height="4" Margin="0,0,0,12" />
+        <TextBlock FontSize="13" Foreground="#FFFFFFFF" Text="{Binding LoadingText}" />
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

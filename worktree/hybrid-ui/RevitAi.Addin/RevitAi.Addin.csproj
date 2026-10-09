@@ -1,0 +1,119 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>RevitAi.Addin</AssemblyName>
+    <RootNamespace>RevitAi.Addin</RootNamespace>
+    <Version>9.2.0</Version>
+    <AssemblyVersion>9.2.0.0</AssemblyVersion>
+    <FileVersion>9.2.0.0</FileVersion>
+    <InformationalVersion>9.2.0-vendor-rename</InformationalVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <ASToolsInstallDir Condition="'$(ASToolsInstallDir)' == ''">$(RevitAiRebuildDir)\build\payload\app\R2027</ASToolsInstallDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitAi.Core\RevitAi.Core.csproj" />
+    <ProjectReference Include="..\..\production-bridge\RevitAi.CodexBridge\RevitAi.CodexBridge.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RevitAPI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2027\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>C:\Program Files\Autodesk\Revit 2027\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core">
+      <HintPath>C:\Program Files\Autodesk\Revit 2027\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf">
+      <HintPath>C:\Program Files\Autodesk\Revit 2027\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAi.Abstractions">
+      <HintPath>$(ASToolsInstallDir)\RevitAi.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAi.Core">
+      <HintPath>$(ASToolsInstallDir)\RevitAi.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAi.Revit">
+      <HintPath>$(ASToolsInstallDir)\RevitAi.Revit.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ACadSharp">
+      <HintPath>$(ASToolsInstallDir)\ACadSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(ASToolsInstallDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>$(ASToolsInstallDir)\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>$(ASToolsInstallDir)\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Core">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.Core.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Fonts">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.Fonts.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Package">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.Package.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokenization">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.Tokenization.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokens">
+      <HintPath>$(LocalDependencyDir)\UglyToad.PdfPig.Tokens.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UI\*.html;UI\*.css;UI\*.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="UI\index.html">
+      <LogicalName>RevitAi.Addin.UI.index.html</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\styles.css">
+      <LogicalName>RevitAi.Addin.UI.styles.css</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\app.js">
+      <LogicalName>RevitAi.Addin.UI.app.js</LogicalName>
+    </EmbeddedResource>
+    <None Include="RevitAi.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
+
+

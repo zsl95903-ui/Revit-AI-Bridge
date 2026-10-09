@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <FontFamily x:Key="MaterialDesignFont">Segoe UI</FontFamily>
+  <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
+  <FontFamily x:Key="FallbackFont">Microsoft YaHei UI</FontFamily>
+  <system:Double x:Key="FontSizeCaption" xmlns:system="clr-namespace:System;assembly=System.Private.CoreLib">10</system:Double>
+  <Double x:Key="FontSizeBody" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">12</Double>
+  <Double x:Key="FontSizeBodyLarge" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">13</Double>
+  <Double x:Key="FontSizeSmall" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">11</Double>
+  <Double x:Key="FontSizeNormal" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">13</Double>
+  <Double x:Key="FontSizeLarge" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">16</Double>
+  <Double x:Key="FontSizeTitle" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">20</Double>
+  <Double x:Key="FontSizeHeading" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">24</Double>
+  <Double x:Key="FontSizeH1" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">32</Double>
+  <Double x:Key="FontSizeH2" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">28</Double>
+  <Double x:Key="FontSizeH3" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">22</Double>
+  <Double x:Key="FontSizeH4" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">18</Double>
+  <Double x:Key="FontSizeH5" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">16</Double>
+  <Double x:Key="FontSizeH6" xmlns="clr-namespace:System;assembly=System.Private.CoreLib">14</Double>
+  <FontWeight x:Key="FontWeightLight">Light</FontWeight>
+  <FontWeight x:Key="FontWeightRegular">Regular</FontWeight>
+  <FontWeight x:Key="FontWeightMedium">Medium</FontWeight>
+  <FontWeight x:Key="FontWeightSemiBold">SemiBold</FontWeight>
+  <FontWeight x:Key="FontWeightBold">Bold</FontWeight>
+</ResourceDictionary>

@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    options:Freeze="True">
+
+    <!-- ==================================== -->
+    <!-- 主色调 - Revit 蓝色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#FF4DB6ED" options:Freeze="True"/>
+    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF0079C1" options:Freeze="True"/>
+    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#FF004E7A" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 强调色 - Revit 橙色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="#FFF57C00" options:Freeze="True"/>
+    <SolidColorBrush x:Key="SecondaryAccentLightBrush" Color="#FFFFB74D" options:Freeze="True"/>
+    <SolidColorBrush x:Key="SecondaryAccentDarkBrush" Color="#FFE65100" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 背景色 -->
+    <!-- ==================================== -->
+
+    <!-- 浅色模式 -->
+    <SolidColorBrush x:Key="MaterialDesignPaper" Color="#FFFFFFFF" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignCardBackground" Color="#FFF5F5F5" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBackground" Color="#FFFAFAFA" options:Freeze="True"/>
+
+    <!-- 深色模式 -->
+    <SolidColorBrush x:Key="MaterialDesignPaperDark" Color="#FF1E1E1E" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignCardBackgroundDark" Color="#FF2D2D2D" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBackgroundDark" Color="#FF252525" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 文本色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="MaterialDesignBody" Color="#DD000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBodyLight" Color="#8A000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBodyHighEmphasis" Color="#000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBodyMediumEmphasis" Color="#99000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignBodyDisabled" Color="#61000000" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 边框色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="MaterialDesignDivider" Color="#1F000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="MaterialDesignDividerDark" Color="#33FFFFFF" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 状态色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" options:Freeze="True"/>
+    <SolidColorBrush x:Key="SuccessLightBrush" Color="#FF81C784" options:Freeze="True"/>
+    <SolidColorBrush x:Key="SuccessDarkBrush" Color="#FF388E3C" options:Freeze="True"/>
+
+    <SolidColorBrush x:Key="WarningBrush" Color="#FFFF9800" options:Freeze="True"/>
+    <SolidColorBrush x:Key="WarningLightBrush" Color="#FFFFB74D" options:Freeze="True"/>
+    <SolidColorBrush x:Key="WarningDarkBrush" Color="#FFF57C00" options:Freeze="True"/>
+
+    <SolidColorBrush x:Key="ErrorBrush" Color="#FFF44336" options:Freeze="True"/>
+    <SolidColorBrush x:Key="ErrorLightBrush" Color="#FFE57373" options:Freeze="True"/>
+    <SolidColorBrush x:Key="ErrorDarkBrush" Color="#FFD32F2F" options:Freeze="True"/>
+
+    <SolidColorBrush x:Key="InfoBrush" Color="#FF2196F3" options:Freeze="True"/>
+    <SolidColorBrush x:Key="InfoLightBrush" Color="#FF64B5F6" options:Freeze="True"/>
+    <SolidColorBrush x:Key="InfoDarkBrush" Color="#FF1976D2" options:Freeze="True"/>
+
+    <!-- ==================================== -->
+    <!-- 其他颜色 -->
+    <!-- ==================================== -->
+
+    <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFFFF" options:Freeze="True"/>
+    <SolidColorBrush x:Key="BlackBrush" Color="#FF000000" options:Freeze="True"/>
+    <SolidColorBrush x:Key="TransparentBrush" Color="#00FFFFFF" options:Freeze="True"/>
+
+</ResourceDictionary>

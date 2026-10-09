@@ -2,6 +2,10 @@
 
 Local-first, typed automation bridge for Autodesk Revit 2027.
 
+> **测试版本说明**
+>
+> 本仓库中的 `RevitAI-Hybrid-Setup-5.0.0.exe`、`rebuilt-120-tools` 和 `worktree` 均为测试版本，非正式发行版，仅供参考、研究与本地验证使用。请在隔离环境或测试模型中验证，不要直接用于生产项目。
+
 ReVitAI Bridge connects an AI agent, MCP client, script, or local process to Revit through a user-scoped Named Pipe. Revit API work is marshalled onto the Revit main thread, executed with transaction and rollback rules, and returned as structured JSON.
 
 ## Highlights
@@ -15,6 +19,25 @@ ReVitAI Bridge connects an AI agent, MCP client, script, or local process to Rev
 - Current-user Named Pipe transport and document GUID validation.
 - Transaction rollback on failure and readback values for writes.
 - Built and verified against Revit 2027.
+
+## 2027 Hybrid Test Package
+
+本次大版本更新包含：
+
+- `releases/2027-test/RevitAI-Hybrid-Setup-5.0.0.exe`
+  - 完整的 Revit 2027 测试安装包，非正式发行版。
+- `rebuilt-120-tools/`
+  - Revit 2027 重建的 120 个工具集源码。
+- `worktree/`
+  - 混合工作树，包含 Revit AI 上层 WebView2 UI、PDF/CAD 扩展、内置 Codex 桥接封装和打包脚本。
+
+内置 Codex 桥接默认随 Revit AI UI 启动，并写入：
+
+```text
+%LOCALAPPDATA%\RevitAi\codex-bridge.json
+```
+
+Codex 可以直接通过该接口调用插件注册的 Revit 绘图工具。
 
 ## Architecture
 

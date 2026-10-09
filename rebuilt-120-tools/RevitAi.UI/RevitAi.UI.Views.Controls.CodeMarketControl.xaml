@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="RevitAi.UI.Views.Controls.CodeMarketControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:RevitAi.UI.Views.Controls" xmlns:vm="clr-namespace:RevitAi.UI.ViewModels" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf" Background="#FFF9F9F9">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+      <local:PriceConverter x:Key="PriceConverter" />
+      <local:FavoriteTextConverter x:Key="FavoriteTextConverter" />
+      <local:FavoriteBackgroundConverter x:Key="FavoriteBackgroundConverter" />
+      <local:FavoriteBorderConverter x:Key="FavoriteBorderConverter" />
+      <local:DownloadButtonTextConverter x:Key="DownloadButtonTextConverter" />
+      <local:DownloadButtonBackgroundConverter x:Key="DownloadButtonBackgroundConverter" />
+      <local:DarkenColorConverter x:Key="DarkenColorConverter" />
+      <DataTemplate x:Key="SnippetCardTemplate" DataType="vm:CodeSnippetMarketItemViewModel">
+        <Border Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,10">
+          <FrameworkElement.Style>
+            <Style TargetType="{x:Type Border}">
+              <Style.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="BorderBrush" Value="#FF0078D4" />
+                  <Setter Property="UIElement.Effect">
+                    <Setter.Value>
+                      <DropShadowEffect Color="#40000000" BlurRadius="8" ShadowDepth="2" Opacity="0.2" />
+                    </Setter.Value>
+                  </Setter>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </FrameworkElement.Style>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+              <emoji:TextBlock TextBlock.FontSize="16" FrameworkElement.VerticalAlignment="Center" FrameworkElement.Margin="0,0,6,0" emoji:TextBlock.Text="{Binding NameEmoji}" />
+              <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="#FF333333" TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Text="{Binding NameText}" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="0,8,0,8">
+              <TextBlock FontSize="12" Foreground="#FF666666" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="60" Text="{Binding Description}" />
+              <ItemsControl Margin="0,4,0,0" ItemsSource="{Binding Tags}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#FFF0F0F0" CornerRadius="3" Padding="4,2" Margin="0,0,4,2">
+                      <TextBlock FontSize="10" Foreground="#FF666666" Text="{Binding}" />
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+            <StackPanel Grid.Row="2">
+              <Grid Margin="0,4,0,8">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                  <TextBlock Text="⭐" FontSize="12" HorizontalAlignment="Center" />
+                  <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#FF666666" Text="{Binding FavoriteCount}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                  <TextBlock Text="📥" FontSize="12" HorizontalAlignment="Center" />
+                  <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#FF666666" Text="{Binding DownloadCount}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                  <TextBlock Text="💰" FontSize="12" HorizontalAlignment="Center" />
+                  <TextBlock FontSize="11" HorizontalAlignment="Center" Foreground="#FF666666" Text="{Binding Price, Converter={StaticResource PriceConverter}}" />
+                </StackPanel>
+              </Grid>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Padding="12,6" Margin="0,0,4,0" Foreground="#FF333333" BorderThickness="1" Cursor="Hand" Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Id}" Content="{Binding IsFavorited, Converter={StaticResource FavoriteTextConverter}}" Background="{Binding IsFavorited, Converter={StaticResource FavoriteBackgroundConverter}}" BorderBrush="{Binding IsFavorited, Converter={StaticResource FavoriteBorderConverter}}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FFE0E0E0" />
+                        </Trigger>
+                        <DataTrigger Value="True" Binding="{Binding IsOwned}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                </Button>
+                <Button Grid.Column="1" Padding="12,6" Margin="4,0,0,0" Foreground="#FFFFFFFF" BorderThickness="0" Cursor="Hand" Content="{Binding Converter={StaticResource DownloadButtonTextConverter}}" Command="{Binding DataContext.DownloadSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Id}" Background="{Binding Converter={StaticResource DownloadButtonBackgroundConverter}}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="{Binding Path=Background, RelativeSource={RelativeSource Self}, Converter={StaticResource DarkenColorConverter}}" />
+                        </Trigger>
+                        <DataTrigger Value="True" Binding="{Binding IsOwned}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                </Button>
+                <Button Grid.Column="0" Content="🗑️ 下架" Padding="12,6" Background="#FFD13438" Foreground="#FFFFFFFF" BorderThickness="0" Cursor="Hand" Panel.ZIndex="10" Command="{Binding DataContext.DeleteSnippetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Id}">
+                  <FrameworkElement.Style>
+                    <Style TargetType="{x:Type Button}">
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                          <Setter Property="Background" Value="#FFA52A2A" />
+                        </Trigger>
+                        <DataTrigger Value="False" Binding="{Binding IsOwned}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Value="deleted" Binding="{Binding Status}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </FrameworkElement.Style>
+                </Button>
+              </Grid>
+            </StackPanel>
+          </Grid>
+        </Border>
+      </DataTemplate>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="0,0,0,1" Padding="16,12">
+      <StackPanel Orientation="Horizontal">
+        <Button Content="🔥 热门" CommandParameter="hot" Padding="12,6" Margin="0,0,4,0" Background="#00FFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding SwitchTabCommand}" />
+        <Button Content="⏰ 最新" CommandParameter="latest" Padding="12,6" Margin="0,0,4,0" Background="#00FFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding SwitchTabCommand}" />
+        <Button Content="⭐ 我的收藏" CommandParameter="favorites" Padding="12,6" Margin="0,0,4,0" Background="#00FFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding SwitchTabCommand}" />
+        <Button Content="📤 我的发布" CommandParameter="my_published" Padding="12,6" Background="#00FFFFFF" BorderThickness="0" Cursor="Hand" Command="{Binding SwitchTabCommand}" />
+      </StackPanel>
+    </Border>
+    <Border Grid.Row="1" Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="0,0,0,1" Padding="16,8">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="100" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="40" />
+        </Grid.ColumnDefinitions>
+        <ComboBox Grid.Column="0" Margin="0,0,8,0" SelectedValue="{Binding SelectedCategory}" ItemsSource="{Binding Categories}" />
+        <TextBox Grid.Column="1" Padding="6,3" Margin="0,0,8,0" Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}">
+          <FrameworkElement.Style>
+            <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="{x:Type TextBox}">
+              <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                  <Setter Property="Background">
+                    <Setter.Value>
+                      <VisualBrush Stretch="None" AlignmentX="Left">
+                        <VisualBrush.Visual>
+                          <TextBlock Text=" 搜索标题、描述或 #标签" FontSize="12" Foreground="#FFAAAAAA" Margin="6,3" />
+                        </VisualBrush.Visual>
+                      </VisualBrush>
+                    </Setter.Value>
+                  </Setter>
+                </Trigger>
+                <Trigger Property="Text" xmlns:system="clr-namespace:System;assembly=System.Private.CoreLib" Value="{x:Static system:String.Empty}">
+                  <Setter Property="Background">
+                    <Setter.Value>
+                      <VisualBrush Stretch="None" AlignmentX="Left">
+                        <VisualBrush.Visual>
+                          <TextBlock Text=" 搜索标题、描述或 #标签" FontSize="12" Foreground="#FFAAAAAA" Margin="6,3" />
+                        </VisualBrush.Visual>
+                      </VisualBrush>
+                    </Setter.Value>
+                  </Setter>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </FrameworkElement.Style>
+        </TextBox>
+        <Button Grid.Column="2" Content="🔍" Padding="6" Command="{Binding SearchCommand}" />
+      </Grid>
+    </Border>
+    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="16,12">
+      <StackPanel>
+        <Grid Height="200" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+          <TextBlock Text="加载中..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FF666666" />
+        </Grid>
+        <ItemsControl ItemTemplate="{StaticResource SnippetCardTemplate}" ItemsSource="{Binding Snippets}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <Button Content="加载更多" HorizontalAlignment="Center" Margin="0,8,0,16" Padding="16,6" Background="#FFF0F0F0" BorderBrush="#FFE0E0E0" BorderThickness="1" Cursor="Hand" Command="{Binding LoadMoreCommand}">
+          <FrameworkElement.Style>
+            <Style TargetType="{x:Type Button}">
+              <Style.Triggers>
+                <DataTrigger Value="False" Binding="{Binding HasMore}">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </FrameworkElement.Style>
+        </Button>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

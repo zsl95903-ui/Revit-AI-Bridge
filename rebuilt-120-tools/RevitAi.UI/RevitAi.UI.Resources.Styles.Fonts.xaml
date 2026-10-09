@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ==================================== -->
+    <!-- 字体家族 -->
+    <!-- ==================================== -->
+
+    <!-- 主字体 - Segoe UI (Windows 默认字体) -->
+    <FontFamily x:Key="MaterialDesignFont">Segoe UI</FontFamily>
+    <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
+
+    <!-- 备用字体 -->
+    <FontFamily x:Key="FallbackFont">Microsoft YaHei UI</FontFamily>
+
+    <!-- ==================================== -->
+    <!-- 字体大小 -->
+    <!-- ==================================== -->
+
+    <!-- Material Design 标准字体大小 -->
+    <sys:Double x:Key="FontSizeCaption">10</sys:Double>
+    <sys:Double x:Key="FontSizeBody">12</sys:Double>
+    <sys:Double x:Key="FontSizeBodyLarge">13</sys:Double>
+    <sys:Double x:Key="FontSizeSmall">11</sys:Double>
+    <sys:Double x:Key="FontSizeNormal">13</sys:Double>
+    <sys:Double x:Key="FontSizeLarge">16</sys:Double>
+    <sys:Double x:Key="FontSizeTitle">20</sys:Double>
+    <sys:Double x:Key="FontSizeHeading">24</sys:Double>
+
+    <!-- Revit 风格标题字体大小 -->
+    <sys:Double x:Key="FontSizeH1">32</sys:Double>
+    <sys:Double x:Key="FontSizeH2">28</sys:Double>
+    <sys:Double x:Key="FontSizeH3">22</sys:Double>
+    <sys:Double x:Key="FontSizeH4">18</sys:Double>
+    <sys:Double x:Key="FontSizeH5">16</sys:Double>
+    <sys:Double x:Key="FontSizeH6">14</sys:Double>
+
+    <!-- ==================================== -->
+    <!-- 字体粗细 -->
+    <!-- ==================================== -->
+
+    <FontWeight x:Key="FontWeightLight">Light</FontWeight>
+    <FontWeight x:Key="FontWeightRegular">Regular</FontWeight>
+    <FontWeight x:Key="FontWeightMedium">Medium</FontWeight>
+    <FontWeight x:Key="FontWeightSemiBold">SemiBold</FontWeight>
+    <FontWeight x:Key="FontWeightBold">Bold</FontWeight>
+
+</ResourceDictionary>

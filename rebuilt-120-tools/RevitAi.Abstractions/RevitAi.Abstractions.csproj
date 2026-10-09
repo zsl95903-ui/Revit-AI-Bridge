@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>RevitAi.Abstractions</AssemblyName>
+    <RootNamespace>RevitAi</RootNamespace>
+    <Version>4.1.0</Version>
+  </PropertyGroup>
+
+</Project>
+

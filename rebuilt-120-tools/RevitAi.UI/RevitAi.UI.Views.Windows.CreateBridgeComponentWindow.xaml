@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.CreateBridgeComponentWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" Title="创建桥梁部件" Height="900" Width="700" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" Topmost="True" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF0277BD" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE1F5FE" />
+      <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#FF01579B" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="BorderBrush" Color="#FFE0E0E0" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+      <SolidColorBrush x:Key="WarningBrush" Color="#FFFF9800" />
+      <SolidColorBrush x:Key="InfoBrush" Color="#FF2196F3" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="ComponentButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource InfoBrush}" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FF1976D2" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="ModernDataGrid" TargetType="{x:Type DataGrid}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="DataGrid.GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="DataGrid.HorizontalGridLinesBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="DataGrid.RowBackground" Value="#FFFFFFFF" />
+        <Setter Property="DataGrid.AlternatingRowBackground" Value="#FFF9F9F9" />
+        <Setter Property="DataGrid.HeadersVisibility" Value="Column" />
+        <Setter Property="DataGrid.AutoGenerateColumns" Value="False" />
+        <Setter Property="DataGrid.CanUserAddRows" Value="False" />
+        <Setter Property="DataGrid.CanUserDeleteRows" Value="False" />
+        <Setter Property="DataGrid.IsReadOnly" Value="True" />
+        <Setter Property="DataGrid.SelectionMode" Value="Single" />
+        <Setter Property="DataGrid.SelectionUnit" Value="FullRow" />
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Text="创建桥梁部件" FontSize="24" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16" />
+    <Border Grid.Row="1" Background="{StaticResource PrimaryLightBrush}" Padding="16,12" CornerRadius="4" Margin="0,0,0,16">
+      <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource PrimaryDarkBrush}">
+        <Run Text="桥梁部件管理：首先定义各类桥梁部件参数，然后为道路路线配置桥梁部件。" />
+        <LineBreak />
+        <Run Text="流程：1. 定义部件 → 2. 选择路线 → 3. 编辑部件配置 → 4. 导出或删除部件" />
+      </TextBlock>
+    </Border>
+    <Grid Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="0,0,0,16" Background="#FFFFFFFF">
+        <StackPanel>
+          <TextBlock FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Margin="0,0,0,16">📦 部件定义</TextBlock>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Grid.Column="0" Content="定义桩部件" Style="{StaticResource ComponentButton}" Margin="0,0,8,8" Command="{Binding DefinePileCommand}" />
+            <Button Grid.Row="0" Grid.Column="1" Content="定义基础部件" Style="{StaticResource ComponentButton}" Margin="0,0,8,8" Command="{Binding DefineFoundationCommand}" />
+            <Button Grid.Row="0" Grid.Column="2" Content="定义墩柱" Style="{StaticResource ComponentButton}" Margin="0,0,0,8" Command="{Binding DefinePierCommand}" />
+            <Button Grid.Row="1" Grid.Column="0" Content="定义盖梁" Style="{StaticResource ComponentButton}" Margin="0,0,8,0" Command="{Binding DefineBeamCommand}" />
+            <Button Grid.Row="1" Grid.Column="1" Content="定义支座" Style="{StaticResource ComponentButton}" Margin="0,0,8,0" Command="{Binding DefineBearingCommand}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="定义桥型" Style="{StaticResource ComponentButton}" Margin="0,0,0,0" Command="{Binding DefineBridgeTypeCommand}" />
+            <Button Grid.Row="2" Grid.Column="0" Content="导入所有定义" Style="{StaticResource PrimaryButton}" Margin="0,8,8,0" Background="{StaticResource WarningBrush}" Command="{Binding ImportAllDefinitionsCommand}" />
+            <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Content="导出所有定义" Style="{StaticResource PrimaryButton}" Margin="0,8,0,0" Background="{StaticResource SuccessBrush}" Command="{Binding ExportAllDefinitionsCommand}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+      <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Background="#FFFFFFFF">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid Row="0" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}">📍 部件定位 - 道路路线列表</TextBlock>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button Content="导出全部配置" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Padding="12,6" FontSize="13" Command="{Binding ExportAllRouteConfigurationsCommand}" />
+              <Button Content="导入全部配置" Style="{StaticResource SecondaryButton}" Padding="12,6" FontSize="13" Background="{StaticResource WarningBrush}" Command="{Binding ImportAllRouteConfigurationsCommand}" />
+            </StackPanel>
+          </Grid>
+          <DataGrid Grid.Row="1" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" ItemsSource="{Binding RoadProjects}" SelectedItem="{Binding SelectedRoadProject}">
+            <DataGrid.Columns>
+              <DataGridTextColumn Header="路线名称" Width="*" Binding="{Binding Name}" />
+              <DataGridTextColumn Header="数据源" Width="1.5*" Binding="{Binding DataSourceDescription}" />
+              <DataGridTextColumn Header="长度 (km)" Width="0.7*" Binding="{Binding LengthDisplay}" />
+              <DataGridTemplateColumn Header="操作" Width="1.5*">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="4,0">
+                      <Button Content="编辑部件" Style="{StaticResource SecondaryButton}" Padding="8,4" FontSize="12" Margin="0,0,4,0" Command="{Binding DataContext.EditComponentsCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                      <Button Content="导出" Style="{StaticResource SecondaryButton}" Padding="8,4" FontSize="12" Margin="0,0,4,0" Background="{StaticResource InfoBrush}" Foreground="#FFFFFFFF" BorderThickness="0" Command="{Binding DataContext.ExportComponentsCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                      <Button Content="删除部件" Style="{StaticResource SecondaryButton}" Padding="8,4" FontSize="12" Background="#FFE53935" Foreground="#FFFFFFFF" BorderThickness="0" Command="{Binding DataContext.DeleteComponentsCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Grid>
+      </Border>
+    </Grid>
+    <Border Grid.Row="3" Background="{StaticResource PrimaryLightBrush}" Padding="16,8" CornerRadius="4" Margin="0,16,0,0">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Content="刷新列表" Style="{StaticResource SecondaryButton}" Margin="0,0,12,0" Command="{Binding RefreshCommand}" />
+        <Button Content="关闭" Style="{StaticResource PrimaryButton}" Command="{Binding CloseCommand}" />
+      </StackPanel>
+    </Border>
+    <Border Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="正在处理..." FontSize="16" Foreground="#FFFFFFFF" Margin="0,0,0,8" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>

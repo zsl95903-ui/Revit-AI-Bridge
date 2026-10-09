@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/Resources/Styles/Colors.xaml" />
+    <ResourceDictionary Source="/Resources/Styles/Fonts.xaml" />
+    <ResourceDictionary Source="/Resources/Styles/ButtonStyles.xaml" />
+    <ResourceDictionary Source="/Resources/Styles/WindowStyles.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+  <converters:OnlineStatusIconConverter x:Key="OnlineStatusIconConverter" />
+  <converters:OnlineStatusTextConverter x:Key="OnlineStatusTextConverter" />
+  <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2196F3" />
+  <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE3F2FD" />
+  <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+  <SolidColorBrush x:Key="WarningBrush" Color="#FFFF9800" />
+  <SolidColorBrush x:Key="ErrorBrush" Color="#FFF44336" />
+  <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+  <SolidColorBrush x:Key="AlipayBrush" Color="#FF1677FF" />
+  <SolidColorBrush x:Key="WechatBrush" Color="#FF07C160" />
+</ResourceDictionary>

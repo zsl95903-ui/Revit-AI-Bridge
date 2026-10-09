@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.SheetSelectionDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="选择工作表" Height="300" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Background="#FFFFFF" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows;assembly=RevitAi.UI">
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Text="请选择要导入的工作表：" FontSize="14" FontWeight="SemiBold" Foreground="#DD000000" Margin="0,0,0,12" />
+    <TextBlock Name="FileNameTextBlock" Grid.Row="0" FontSize="12" Foreground="#88000000" Margin="0,24,0,12" />
+    <Border Grid.Row="1" BorderBrush="#FFE0E0E0" BorderThickness="1" CornerRadius="4" Background="#FFFFFFFF">
+      <ListBox Name="SheetsListBox" BorderThickness="0" FontSize="13" HorizontalContentAlignment="Stretch" />
+    </Border>
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+      <Button Name="CancelButton" Content="取消" Width="80" Height="32" Margin="0,0,12,0" Background="#FFFFFFFF" BorderBrush="#FFE0E0E0" BorderThickness="1" Cursor="Hand" Click="CancelButton_Click" />
+      <Button Name="OKButton" Content="确定" Width="80" Height="32" Background="#FF0277BD" Foreground="#FFFFFFFF" BorderThickness="0" Cursor="Hand" Click="OKButton_Click" />
+    </StackPanel>
+  </Grid>
+</Window>

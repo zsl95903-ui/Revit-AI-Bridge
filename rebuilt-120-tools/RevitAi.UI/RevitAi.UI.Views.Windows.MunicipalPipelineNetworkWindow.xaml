@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.MunicipalPipelineNetworkWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" Title="创建市政管网" Height="900" Width="650" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" Topmost="True" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF0277BD" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE1F5FE" />
+      <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#FF01579B" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="BorderBrush" Color="#FFE0E0E0" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+      <SolidColorBrush x:Key="WarningBrush" Color="#FFFF9800" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="ModernTabControl" TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="0" />
+      </Style>
+      <Style x:Key="ModernTabItem" TargetType="{x:Type TabItem}">
+        <Setter Property="Background" Value="#FFF5F5F5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="#99000000" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type TabItem}">
+              <Grid>
+                <Border Name="Border" Background="{TemplateBinding Control.Background}" BorderThickness="0" CornerRadius="4,4,0,0" Margin="0,0,4,0">
+                  <ContentPresenter Name="ContentSite" ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Control.Padding}" />
+                </Border>
+              </Grid>
+              <ControlTemplate.Triggers>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="UIElement.IsMouseOver" Value="True" />
+                    <Condition Property="TabItem.IsSelected" Value="False" />
+                  </MultiTrigger.Conditions>
+                  <Setter Property="Background" Value="#FFE0E0E0" />
+                </MultiTrigger>
+                <Trigger Property="TabItem.IsSelected" Value="True">
+                  <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+                  <Setter Property="Foreground" Value="#FFFFFFFF" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Text="创建市政管网" FontSize="24" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16" />
+    <Border Grid.Row="1" Background="{StaticResource PrimaryLightBrush}" Padding="16,12" CornerRadius="4" Margin="0,0,0,16">
+      <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource PrimaryDarkBrush}">
+        <Run Text="根据CAD图纸和表格文件创建地下给排水管道和检查井等模型。选择下方的两种生成方式之一：" />
+      </TextBlock>
+    </Border>
+    <TabControl Grid.Row="2" Style="{StaticResource ModernTabControl}">
+      <TabItem Header="选择CAD图层与管道连接表" Style="{StaticResource ModernTabItem}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,16">
+          <StackPanel>
+            <Border Background="#FFF9F9F9" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="16" CornerRadius="4" Margin="0,0,0,16">
+              <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="#99000000">
+                <Run Text="此方式用于选择CAD图中检查井名称和位置，设置管道连接关系表，绘制管网。" />
+                <LineBreak />
+                <Run Text="流程：1. 选择管井图层 → 2. 导入管道连接表 → 3. 管道系统命名 → 4. 生成管网" />
+              </TextBlock>
+            </Border>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="0" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <StackPanel Margin="16">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                      <Ellipse Fill="{StaticResource PrimaryBrush}" />
+                      <TextBlock Text="1" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="选择图元类型" />
+                      <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="选择CAD图元以自动识别图层，选择完成后按空格键结束" />
+                    </StackPanel>
+                  </Grid>
+                  <Grid Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Content="选择管井" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Command="{Binding LayerConnectionTab.SelectManholesCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="单击选择管井（单选，点击后自动完成）" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="1" Content="选择管井标注" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8" Command="{Binding LayerConnectionTab.SelectManholeAnnotationsCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="可多选管井标注，选择完成后按空格键结束" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" FontSize="13" Margin="0,12,0,0">
+                      <Run Text="已选择: " Foreground="{StaticResource TextBrush}" /> <Run Foreground="{StaticResource SuccessBrush}" Text="{Binding LayerConnectionTab.SelectionSummary, Mode=OneWay}" /></TextBlock>
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFF9F9F9" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="12" Visibility="{Binding LayerConnectionTab.HasLayerInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+                      <TextBlock FontSize="12" Foreground="#99000000" TextWrapping="Wrap">
+                        <Run Text="识别到的图层：" FontWeight="SemiBold" />
+                        <LineBreak />
+                        <Run Text="{Binding LayerConnectionTab.DetectedLayers, Mode=OneWay}" />
+                      </TextBlock>
+                    </Border>
+                  </Grid>
+                </StackPanel>
+              </Border>
+              <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="0" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <StackPanel Margin="16">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                      <Ellipse Fill="{StaticResource PrimaryBrush}" />
+                      <TextBlock Text="2" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="导入管道连接表" />
+                      <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="支持 .xlsx, .xls, .csv 格式" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                      <Button Content="导出样例" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Command="{Binding LayerConnectionTab.ExportSampleTableCommand}" />
+                      <Button Content="导入表格" Style="{StaticResource PrimaryButton}" Command="{Binding LayerConnectionTab.ImportConnectionTableCommand}" />
+                    </StackPanel>
+                  </Grid>
+                  <TextBlock FontSize="13" Foreground="{StaticResource SuccessBrush}" Margin="44,12,0,0" Visibility="{Binding LayerConnectionTab.HasConnectionTable, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Run Text="已导入: " /> <Run Text="{Binding LayerConnectionTab.ConnectionTableName}" /></TextBlock>
+                </StackPanel>
+              </Border>
+              <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                    <Ellipse Fill="{StaticResource WarningBrush}" />
+                    <TextBlock Text="3" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Grid>
+                  <StackPanel Grid.Column="1">
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="管道类型命名" />
+                    <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,8" Text="输入管道类型名称，所有管道将使用此名称创建统一的管道类型" />
+                    <TextBox FontSize="14" Padding="8" BorderBrush="{StaticResource BorderBrush}" Background="#FFFFFFFF" Text="{Binding LayerConnectionTab.PipeSystemName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock FontSize="11" Foreground="#99000000" Margin="0,4,0,0" FontStyle="Italic">
+                      <Run Text="默认名称: 排水管" />
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+              </Border>
+              <Border Grid.Row="3" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                    <Ellipse Fill="{StaticResource SuccessBrush}" />
+                    <TextBlock Text="4" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Grid>
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="生成管网模型" />
+                    <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="根据以上设置生成Revit管网模型" />
+                  </StackPanel>
+                  <Button Grid.Column="2" Content="生成管网" Style="{StaticResource PrimaryButton}" Background="{StaticResource SuccessBrush}" Command="{Binding LayerConnectionTab.GenerateNetworkCommand}" />
+                </Grid>
+              </Border>
+            </Grid>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+      <TabItem Header="选择CAD图层与管井参数表" Style="{StaticResource ModernTabItem}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,16">
+          <StackPanel>
+            <Border Background="#FFF9F9F9" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="16" CornerRadius="4" Margin="0,0,0,16">
+              <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="#99000000">
+                <Run Text="此方式用于选择CAD图中检查井和管道位置，表格定义管道标高，绘制管网。" />
+                <LineBreak />
+                <Run Text="流程：1. 选择检查井和管道图层 → 2. 导入管井参数表 → 3. 管道系统命名 → 4. 生成管网" />
+              </TextBlock>
+            </Border>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <Border Grid.Row="0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="0" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <StackPanel Margin="16">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                      <Ellipse Fill="{StaticResource PrimaryBrush}" />
+                      <TextBlock Text="1" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="选择图元类型" />
+                      <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="选择CAD图元以自动识别图层，选择完成后按空格键结束" />
+                    </StackPanel>
+                  </Grid>
+                  <Grid Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Content="选择管井" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Command="{Binding LayerParameterTab.SelectManholesCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="单击选择管井（单选，点击后自动完成）" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="1" Content="选择管井标注" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8" Command="{Binding LayerParameterTab.SelectManholeAnnotationsCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="可多选管井标注，选择完成后点击左上角完成按钮" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <Button Grid.Row="1" Grid.Column="0" Content="选择管道" Style="{StaticResource PrimaryButton}" Margin="0,0,8,8" Command="{Binding LayerParameterTab.SelectPipesCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="单击选择管道（单选，点击后自动完成）" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <Button Grid.Row="1" Grid.Column="1" Content="选择管道标注" Style="{StaticResource PrimaryButton}" Margin="0,0,0,8" Command="{Binding LayerParameterTab.SelectPipeAnnotationsCommand}">
+                      <FrameworkElement.ToolTip>
+                        <ToolTip Content="可多选管道标注，选择完成后点击左上角完成按钮" />
+                      </FrameworkElement.ToolTip>
+                    </Button>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontSize="13" Margin="0,12,0,0">
+                      <Run Text="已选择: " Foreground="{StaticResource TextBrush}" /> <Run Foreground="{StaticResource SuccessBrush}" Text="{Binding LayerParameterTab.SelectionSummary, Mode=OneWay}" /></TextBlock>
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="#FFF9F9F9" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="12" Visibility="{Binding LayerParameterTab.HasLayerInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+                      <TextBlock FontSize="12" Foreground="#99000000" TextWrapping="Wrap">
+                        <Run Text="识别到的图层：" FontWeight="SemiBold" />
+                        <LineBreak />
+                        <Run Text="{Binding LayerParameterTab.DetectedLayers, Mode=OneWay}" />
+                      </TextBlock>
+                    </Border>
+                  </Grid>
+                </StackPanel>
+              </Border>
+              <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="0" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <StackPanel Margin="16">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                      <Ellipse Fill="{StaticResource PrimaryBrush}" />
+                      <TextBlock Text="2" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                      <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="导入管井参数表" />
+                      <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="支持 .xlsx, .xls, .csv 格式，定义管道标高等参数" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                      <Button Content="导出样例" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Command="{Binding LayerParameterTab.ExportSampleTableCommand}" />
+                      <Button Content="导入表格" Style="{StaticResource PrimaryButton}" Command="{Binding LayerParameterTab.ImportParameterTableCommand}" />
+                    </StackPanel>
+                  </Grid>
+                  <TextBlock FontSize="13" Foreground="{StaticResource SuccessBrush}" Margin="44,12,0,0" Visibility="{Binding LayerParameterTab.HasParameterTable, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Run Text="已导入: " /> <Run Text="{Binding LayerParameterTab.ParameterTableName}" /></TextBlock>
+                </StackPanel>
+              </Border>
+              <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                    <Ellipse Fill="{StaticResource WarningBrush}" />
+                    <TextBlock Text="3" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Grid>
+                  <StackPanel Grid.Column="1">
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="管道类型命名" />
+                    <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,8" Text="输入管道类型名称，所有管道将使用此名称创建统一的管道类型" />
+                    <TextBox FontSize="14" Padding="8" BorderBrush="{StaticResource BorderBrush}" Background="#FFFFFFFF" Text="{Binding LayerParameterTab.PipeSystemName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock FontSize="11" Foreground="#99000000" Margin="0,4,0,0" FontStyle="Italic">
+                      <Run Text="默认名称: 排水管" />
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+              </Border>
+              <Border Grid.Row="3" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="0,0,0,12" Background="#FFFFFFFF">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Column="0" Width="32" Height="32" Margin="0,0,12,0">
+                    <Ellipse Fill="{StaticResource SuccessBrush}" />
+                    <TextBlock Text="4" Foreground="#FFFFFFFF" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Grid>
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" Text="生成管网模型" />
+                    <TextBlock FontSize="12" Foreground="#99000000" Margin="0,4,0,0" Text="根据以上设置生成Revit管网模型" />
+                  </StackPanel>
+                  <Button Grid.Column="2" Content="生成管网" Style="{StaticResource PrimaryButton}" Background="{StaticResource SuccessBrush}" Command="{Binding LayerParameterTab.GenerateNetworkCommand}" />
+                </Grid>
+              </Border>
+            </Grid>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+    </TabControl>
+    <Border Grid.Row="3" Background="{StaticResource PrimaryLightBrush}" Padding="16,8" CornerRadius="4" Margin="0,16,0,0">
+      <TextBlock FontSize="13" Foreground="{StaticResource PrimaryDarkBrush}" Text="{Binding StatusMessage}" />
+    </Border>
+    <Border Grid.Row="0" Grid.RowSpan="4" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="正在处理..." FontSize="16" Foreground="#FFFFFFFF" Margin="0,0,0,8" />
+      </StackPanel>
+    </Border>
+  </Grid>
+</Window>

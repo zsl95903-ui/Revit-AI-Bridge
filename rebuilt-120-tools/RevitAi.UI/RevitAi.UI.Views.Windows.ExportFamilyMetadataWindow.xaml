@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.ExportFamilyMetadataWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="导出族元数据" Height="700" Width="430" WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows;assembly=RevitAi.UI">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF0277BD" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE1F5FE" />
+      <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#FF01579B" />
+      <SolidColorBrush x:Key="TextBrush" Color="#DD000000" />
+      <SolidColorBrush x:Key="BorderBrush" Color="#FFE0E0E0" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="#FF4CAF50" />
+      <SolidColorBrush x:Key="WarningBrush" Color="#FFFF9800" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+          </Trigger>
+          <Trigger Property="IsEnabled" Value="False">
+            <Setter Property="Background" Value="#FFBDBDBD" />
+            <Setter Property="FrameworkElement.Cursor" Value="Arrow" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#FFFFFFFF" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#FFF5F5F5" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Text="导出族元数据和缩略图" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,16" />
+    <Border Grid.Row="1" Background="{StaticResource PrimaryLightBrush}" Padding="12" Margin="0,0,0,16" CornerRadius="4" MinHeight="110">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextBrush}" Margin="0,0,0,8">
+          <Run Text="选中要导出的族文件，系统将自动生成：" />
+          <LineBreak />
+          <Run Text="• 缩略图：与族文件同名的 PNG 文件" />
+          <LineBreak />
+          <Run Text="• 元数据：包含族参数的 JSON 文件" />
+          <LineBreak />
+          <Run Text="• 族文件：.rfa 文件（可选）" />
+        </TextBlock>
+        <WrapPanel Margin="0,8,0,0">
+          <CheckBox Name="ChkExportThumbnail" Content="导出缩略图" IsChecked="True" Margin="0,0,16,8" />
+          <CheckBox Name="ChkExportMetadata" Content="导出元数据" IsChecked="True" Margin="0,0,16,8" />
+          <CheckBox Name="ChkSaveFamilyFile" Content="保存族文件" IsChecked="False" Margin="0,0,0,8" />
+        </WrapPanel>
+        <WrapPanel Margin="0,0,0,0">
+          <CheckBox Name="ChkOverwrite" Content="覆盖已存在文件" IsChecked="False" Margin="0,0,16,8" />
+          <CheckBox Name="ChkHideProjectFamilies" Content="隐藏项目中的族" IsChecked="False" Margin="0,0,0,8" />
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+    <Grid Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid Row="0" Margin="0,0,0,8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <CheckBox Name="ChkSelectAll" Content="全选" Grid.Column="0" VerticalAlignment="Center" Checked="ChkSelectAll_Checked" Unchecked="ChkSelectAll_Unchecked" />
+        <TextBlock Name="TxtSelectedCount" Text="已选择: 0 个族" Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0" />
+        <Button Content="添加族文件..." Style="{StaticResource SecondaryButton}" Grid.Column="3" Padding="8,4" HorizontalAlignment="Right" Click="BtnAddFamilies_Click" />
+      </Grid>
+      <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+        <ListBox Name="LstFamilies" SelectionMode="Extended" ItemsSource="{Binding Families}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal" Margin="4">
+                <CheckBox VerticalAlignment="Center" Margin="0,0,8,0" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                <TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ListBox>
+      </Border>
+    </Grid>
+    <Grid Row="3" Margin="0,16,0,0" Visibility="{Binding ProgressVisibility}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <TextBlock Grid.Row="0" Margin="0,0,0,4" Text="{Binding ProgressText}" />
+      <ProgressBar Grid.Row="1" Height="20" Minimum="0" Maximum="100" Value="{Binding ProgressValue}" />
+    </Grid>
+    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+      <Button Content="导出" Style="{StaticResource PrimaryButton}" Width="100" Margin="0,0,8,0" Click="BtnExport_Click" />
+      <Button Content="关闭" Style="{StaticResource SecondaryButton}" Width="100" Click="BtnClose_Click" />
+    </StackPanel>
+  </Grid>
+</Window>

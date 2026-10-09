@@ -1,0 +1,254 @@
+﻿<Project>
+  <!-- Shared build settings for the RevitAi solution (rebuilt from AS.Tools 1.2.5.3) -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <DebugType>none</DebugType>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <NoWarn>$(NoWarn);CS0618;CS0612;CS0067;CS0169;CS0649;CS8981;CS0162;CS0219;CS0414;CS1998;CS8632;CS0108;CS0114;CS0168;CS0472;CS0728;CS1717;CS0660;CS0661;CS0282;CS0693;CS1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Private.Windows.Core">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\System.Private.Windows.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ACadSharp">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\ACadSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Clipper2Lib">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Clipper2Lib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CommunityToolkit.Mvvm">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\CommunityToolkit.Mvvm.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="COSXML">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\COSXML.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="DelaunatorSharp">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\DelaunatorSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Emoji.Wpf">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Emoji.Wpf.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\EPPlus.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\EPPlus.Interfaces.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\EPPlus.System.Drawing.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Markdig">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Markdig.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Scripting">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.CodeAnalysis.CSharp.Scripting.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Scripting">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Sqlite">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Data.Sqlite.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.CommandLine">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.CommandLine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Physical">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileSystemGlobbing">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Hosting.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Console">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.Console.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Debug">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.Debug.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventLog">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.EventLog.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventSource">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Logging.EventSource.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Web.WebView2.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Win32.SystemEvents">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Microsoft.Win32.SystemEvents.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPI">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\SQLitePCLRaw.batteries_v2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\SQLitePCLRaw.core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Stfu">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Stfu.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Drawing.Common">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\System.Drawing.Common.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Speech">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\System.Speech.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Typography.GlyphLayout">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Typography.GlyphLayout.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Typography.OpenFont">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\Typography.OpenFont.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="WebView2Loader">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\libs\R2027\WebView2Loader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
+

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="RevitAi.UI.Views.Windows.DeviceManagementWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:RevitAi.UI.Converters" WindowStartupLocation="CenterOwner" Title="我的设备" Width="400" Height="450" ResizeMode="CanResize" Background="#FFFFFF" WindowStyle="SingleBorderWindow" xmlns:windows="clr-namespace:RevitAi.UI.Views.Windows">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2196F3" />
+      <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FFE3F2FD" />
+      <SolidColorBrush x:Key="ErrorBrush" Color="#FFF44336" />
+      <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="UIElement.Opacity" Value="0.8" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <Style x:Key="DangerButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource ErrorBrush}" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Background="{TemplateBinding Control.Background}" BorderThickness="{TemplateBinding Control.BorderThickness}" BorderBrush="{TemplateBinding Control.BorderBrush}" Padding="{TemplateBinding Control.Padding}" CornerRadius="4">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+          <Trigger Property="UIElement.IsMouseOver" Value="True">
+            <Setter Property="UIElement.Opacity" Value="0.8" />
+          </Trigger>
+        </Style.Triggers>
+      </Style>
+      <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Border Grid.Row="0" Background="{StaticResource PrimaryLightBrush}" Padding="16,12">
+      <TextBlock Text="我的设备" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" />
+    </Border>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="16">
+      <ItemsControl ItemsSource="{Binding UserDevices}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Background="#FFE3F2FD" Padding="12" CornerRadius="8" Margin="0,0,0,8">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                  <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Text="{Binding DeviceName}" />
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Text="（当前设备）" Foreground="#FF4CAF50" Margin="4,0,0,0" Visibility="{Binding IsCurrentDevice, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                  </StackPanel>
+                  <TextBlock FontSize="12" Foreground="#FF666666" Margin="0,0,0,2">
+                    <Run Text="设备ID: " /> <Run FontWeight="Medium" Foreground="#FF333333" Text="{Binding DeviceId, StringFormat={}{0}...}" /></TextBlock>
+                  <TextBlock FontSize="12" Foreground="#FF666666">
+                    <Run Text="系统: " /> <Run FontWeight="Medium" Foreground="#FF333333" Text="{Binding OsInfo}" /></TextBlock>
+                </StackPanel>
+                <Button Grid.Column="1" Content="解绑" Style="{StaticResource DangerButton}" Width="60" Height="28" FontSize="12" Command="{Binding DataContext.UnbindDeviceCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding DeviceId}" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+    <TextBlock Grid.Row="1" Text="暂无绑定设备" FontSize="14" Foreground="#FF999999" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding HasNoDevices, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <Border Grid.Row="2" Background="#FFF3F3F3" Padding="12,8" Margin="16,0,16,8">
+      <TextBlock FontSize="12" HorizontalAlignment="Center">
+        <Run Text="已绑定 " /> <Run FontWeight="Bold" Text="{Binding DeviceCount}" /> <Run Text=" / " /> <Run FontWeight="Bold" Text="{Binding MaxDevices}" /> <Run Text=" 台设备" /></TextBlock>
+    </Border>
+    <Border Grid.Row="3" Padding="16,12">
+      <Button Content="关闭" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" Width="80" Height="32" Command="{Binding CloseCommand}" />
+    </Border>
+    <Grid Row="0" RowSpan="4" Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ProgressBar IsIndeterminate="True" Width="60" Height="4" Margin="0,0,0,12" />
+        <TextBlock Text="加载中..." FontSize="13" Foreground="#FFFFFFFF" />
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

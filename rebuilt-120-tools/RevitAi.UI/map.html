@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AS.Tools - 卫星地图浏览器</title>
+
+    <!-- Leaflet CSS (通过 CDN 加载，也可改为本地文件) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <!-- Leaflet.Draw CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* 自定义矩形样式 */
+        .leaflet-rectangle-selection {
+            background-color: rgba(255, 120, 0, 0.1);
+            border: 2px solid #ff7800;
+        }
+
+        /* Leaflet.Draw 控件位置调整 */
+        .leaflet-draw-toolbar a {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .leaflet-draw-toolbar a:hover {
+            background-color: #ff7800;
+            color: #fff;
+        }
+
+        /* 加载提示 */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* 地图源切换按钮 */
+        .map-source-switcher {
+            position: absolute;
+            top: 10px;
+            left: 60px;
+            z-index: 999;
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 5px;
+        }
+
+        .map-source-switcher button {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            transition: all 0.2s;
+        }
+
+        .map-source-switcher button:hover {
+            background: #e8e8e8;
+        }
+
+        .map-source-switcher button.active {
+            background: #ff7800;
+            color: white;
+            border-color: #ff7800;
+        }
+
+        /* 位置搜索框 */
+        .search-container {
+            position: absolute;
+            top: 10px;
+            left: 260px;
+            z-index: 999;
+            display: flex;
+            gap: 5px;
+        }
+
+        .search-input {
+            width: 220px;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #ff7800;
+        }
+
+        .search-btn {
+            padding: 6px 12px;
+            border: 1px solid #ff7800;
+            background: #ff7800;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background: #e06600;
+        }
+
+        .search-btn:disabled {
+            background: #ccc;
+            border-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Google Maps 警告 */
+        .google-maps-warning {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 152, 0, 0.95);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* 天地图密钥提示 */
+        .tianditu-key-notice {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 999;
+            background: rgba(100, 100, 100, 0.75);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 3px;
+            font-size: 13px;
+            display: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            max-width: 240px;
+            line-height: 1.4;
+            pointer-events: auto;
+        }
+
+        .tianditu-key-notice .notice-title {
+            font-weight: normal;
+            margin-bottom: 2px;
+            font-size: 13px;
+        }
+
+        .tianditu-key-notice .notice-close {
+            position: absolute;
+            top: 2px;
+            right: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.6;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0;
+        }
+
+        .tianditu-key-notice .notice-close:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- 位置搜索框 -->
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="搜索位置（如：天津站）" />
+        <button id="search-btn" class="search-btn" onclick="searchLocation()">搜索</button>
+    </div>
+
+    <!-- 地图源切换按钮 -->
+    <div class="map-source-switcher">
+        <button id="btn-tianditu" class="active" onclick="switchMapSource('tianditu')">天地图</button>
+        <button id="btn-google" onclick="switchMapSource('google')">Google Maps</button>
+    </div>
+
+    <!-- Google Maps 警告提示 -->
+    <div class="google-maps-warning" id="google-warning">
+        ⚠️ Google Maps 在国内可能需要代理，建议海外项目使用
+    </div>
+
+    <!-- 天地图密钥提示 -->
+    <div class="tianditu-key-notice" id="tianditu-notice" style="display: block;">
+        <button class="notice-close" onclick="hideTiandituNotice()">×</button>
+        <div>卫星图空白？联系管理员轮换密钥</div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading" id="loading">正在定位并加载地图...</div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <!-- Leaflet.Draw JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+    <!-- Leaflet.Draw 中文化 -->
+    <script>
+        L.drawLocal = {
+            draw: {
+                toolbar: {
+                    actions: { title: '取消绘制', text: '取消' },
+                    finish: { title: '完成绘制', text: '完成' },
+                    undo: { title: '删除最后一个点', text: '删除最后一个点' },
+                    buttons: {
+                        polyline: '绘制折线',
+                        polygon: '绘制多边形',
+                        rectangle: '绘制矩形',
+                        circle: '绘制圆形',
+                        marker: '放置标记',
+                        circlemarker: '放置圆形标记'
+                    }
+                },
+                handlers: {
+                    circle: { tooltip: { start: '点击并拖动绘制圆形' }, radius: '半径' },
+                    circlemarker: { tooltip: { start: '点击放置圆形标记' } },
+                    marker: { tooltip: { start: '点击放置标记' } },
+                    polygon: { tooltip: { start: '点击开始绘制多边形', cont: '点击继续绘制', end: '点击第一个点完成绘制' } },
+                    polyline: { tooltip: { start: '点击开始绘制折线', cont: '点击继续绘制', end: '点击最后一个点完成' } },
+                    rectangle: { tooltip: { start: '点击并拖动绘制矩形' } },
+                    simpleshape: { tooltip: { end: '释放鼠标完成绘制' } }
+                }
+            },
+            edit: {
+                toolbar: {
+                    actions: { save: { title: '保存修改', text: '保存' }, cancel: { title: '取消编辑，放弃修改', text: '取消' }, clearAll: { title: '清除所有图层', text: '清除全部' } },
+                    buttons: { edit: '编辑图层', editDisabled: '没有可编辑的图层', remove: '删除图层', removeDisabled: '没有可删除的图层' }
+                },
+                handlers: {
+                    edit: {
+                        tooltip: { text: '拖动控制点或标记来编辑图形', subtext: '点击"取消"放弃修改' }
+                    },
+                    remove: {
+                        tooltip: { text: '点击图形删除' }
+                    }
+                }
+            }
+        };
+    </script>
+
+    <script>
+        // 天地图 Token（申请地址：https://console.tianditu.gov.cn/api-key）
+        // 注意：应该通过C#动态注入，不应该硬编码在这里
+        const TK = "YOUR_TIANDITU_TOKEN_HERE";
+
+        // 地图对象
+        let map;
+        let drawnItems;
+        let selectionRectangle;
+        let currentMapSource = 'tianditu'; // 当前地图源：tianditu 或 google
+        let tiandituLayer = null;
+        let tiandituLabelLayer = null;
+        let googleLayer = null;
+
+        // 切换地图源
+        function switchMapSource(source) {
+            console.log('切换地图源:', source);
+            currentMapSource = source;
+
+            // 更新按钮状态
+            document.getElementById('btn-tianditu').classList.remove('active');
+            document.getElementById('btn-google').classList.remove('active');
+            document.getElementById(`btn-${source}`).classList.add('active');
+
+            // 显示/隐藏 Google Maps 警告
+            const warning = document.getElementById('google-warning');
+            warning.style.display = source === 'google' ? 'block' : 'none';
+
+            // 显示/隐藏天地图提示
+            const notice = document.getElementById('tianditu-notice');
+            notice.style.display = source === 'tianditu' ? 'block' : 'none';
+
+            // 移除当前图层
+            if (tiandituLayer) {
+                map.removeLayer(tiandituLayer);
+                tiandituLayer = null;
+            }
+            if (tiandituLabelLayer) {
+                map.removeLayer(tiandituLabelLayer);
+                tiandituLabelLayer = null;
+            }
+            if (googleLayer) {
+                map.removeLayer(googleLayer);
+                googleLayer = null;
+            }
+
+            // 加载新地图源
+            if (source === 'tianditu') {
+                loadTiandituMap();
+            } else if (source === 'google') {
+                loadGoogleMap();
+            }
+
+            // 通知 C# 地图源已切换
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: 'mapSourceChanged',
+                    source: source
+                });
+            }
+        }
+
+        // 隐藏天地图密钥提示
+        function hideTiandituNotice() {
+            const notice = document.getElementById('tianditu-notice');
+            if (notice) {
+                notice.style.display = 'none';
+            }
+        }
+
+        // 加载天地图
+        function loadTiandituMap() {
+            // 天地图卫星影像图层
+            tiandituLayer = L.tileLayer(`https://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${TK}`, {
+                maxZoom: 18,
+                subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
+            }).addTo(map);
+
+            // 天地图文字标注图层
+            tiandituLabelLayer = L.tileLayer(`https://t0.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${TK}`, {
+                maxZoom: 18,
+                subdomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
+            }).addTo(map);
+        }
+
+        // 加载 Google Maps
+        function loadGoogleMap() {
+            // 使用 Google Maps Satellite tile layer (通过第三方代理，因为 Google 官方没有 WMTS)
+            // 使用 mt1.google.com 作为卫星图源
+            googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(map);
+        }
+
+        // 获取用户 IP 地理位置（并行查询多个服务，取最快返回的结果）
+        async function getUserLocation() {
+            try {
+                // 定位服务列表（按优先级排序）
+                const services = [
+                    {
+                        name: 'ip-api.com',
+                        url: 'https://ip-api.com/json/?fields=status,message,country,city,lat,lon,query',
+                        timeout: 3000,
+                        parse: (data) => {
+                            if (data.status === 'success' && data.lat && data.lon) {
+                                return { lat: data.lat, lon: data.lon, city: data.city, country: data.country };
+                            }
+                            throw new Error(data.message || '定位失败');
+                        }
+                    },
+                    {
+                        name: 'ipapi.co',
+                        url: 'https://ipapi.co/json/',
+                        timeout: 3000,
+                        parse: (data) => {
+                            if (data.latitude && data.longitude) {
+                                return { lat: data.latitude, lon: data.longitude, city: data.city, country: data.country };
+                            }
+                            throw new Error('响应缺少坐标数据');
+                        }
+                    },
+                    {
+                        name: 'ip.sb',
+                        url: 'https://api.ip.sb/geoip',
+                        timeout: 3000,
+                        parse: (data) => {
+                            if (data.latitude && data.longitude) {
+                                return { lat: data.latitude, lon: data.longitude, city: data.city, country: data.country };
+                            }
+                            throw new Error('响应缺少坐标数据');
+                        }
+                    },
+                    {
+                        name: 'ipwhois.app',
+                        url: 'https://ipwhois.app/json/',
+                        timeout: 4000,
+                        parse: (data) => {
+                            if (data.latitude && data.longitude) {
+                                return { lat: data.latitude, lon: data.longitude, city: data.city, country: data.country };
+                            }
+                            throw new Error('响应缺少坐标数据');
+                        }
+                    },
+                    {
+                        name: 'ipapi.com',
+                        url: 'https://ipapi.com/json/',
+                        timeout: 3000,
+                        parse: (data) => {
+                            if (data.latitude && data.longitude) {
+                                return { lat: data.latitude, lon: data.longitude, city: data.city, country: data.country_name };
+                            }
+                            throw new Error('响应缺少坐标数据');
+                        }
+                    }
+                ];
+
+                // 并行查询所有服务，返回最快成功的结果
+                const promises = services.map(async (service) => {
+                    try {
+                        // 创建超时 Promise
+                        const timeoutPromise = new Promise((_, reject) => {
+                            setTimeout(() => reject(new Error('请求超时')), service.timeout);
+                        });
+
+                        // 发起请求
+                        const fetchPromise = fetch(service.url, {
+                            method: 'GET',
+                            headers: { 'Accept': 'application/json' }
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            return response.json();
+                        });
+
+                        // 竞速：请求 vs 超时
+                        const data = await Promise.race([fetchPromise, timeoutPromise]);
+
+                        // 解析响应
+                        const location = service.parse(data);
+                        return { success: true, service: service.name, ...location };
+                    } catch (error) {
+                        return { success: false, service: service.name, error: error.message };
+                    }
+                });
+
+                // 等待任意一个成功（或全部失败）
+                const results = await Promise.all(promises);
+                const firstSuccess = results.find(r => r.success);
+
+                if (firstSuccess) {
+                    return {
+                        lat: firstSuccess.lat,
+                        lon: firstSuccess.lon,
+                        city: firstSuccess.city || '未知',
+                        country: firstSuccess.country || '未知',
+                        success: true,
+                        source: firstSuccess.service
+                    };
+                }
+
+                throw new Error('所有定位服务均失败');
+            } catch (error) {
+                // 回退到天府广场（成都）
+                return {
+                    lat: 30.6574,
+                    lon: 104.0658,
+                    city: '成都（默认）',
+                    country: '中国',
+                    success: false,
+                    source: 'fallback'
+                };
+            }
+        }
+
+        // 初始化地图
+        async function initMap() {
+            // 显示加载提示
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                // 检查是否有上次导入的位置
+                let centerLat, centerLng, defaultZoom;
+                let locationInfo = '';
+
+                if (window.AS_TOOLS_INITIAL_POSITION && window.AS_TOOLS_INITIAL_POSITION.hasInitialPosition) {
+                    // 使用上次导入的位置
+                    centerLat = window.AS_TOOLS_INITIAL_POSITION.lat;
+                    centerLng = window.AS_TOOLS_INITIAL_POSITION.lon;
+                    defaultZoom = window.AS_TOOLS_INITIAL_POSITION.zoom;
+                    locationInfo = '上次导入位置';
+                    console.log(`使用上次导入位置: ${centerLat}, ${centerLng}`);
+                } else {
+                    // 使用 IP 定位（添加超时保护）
+                    const userLocation = await Promise.race([
+                        getUserLocation(),
+                        new Promise((_, reject) =>
+                            setTimeout(() => reject(new Error('定位超时')), 5000)
+                        )
+                    ]).catch(() => {
+                        // 超时或失败时使用默认位置
+                        console.warn('IP 定位失败，使用默认位置（成都天府广场）');
+                        return {
+                            lat: 30.6574,
+                            lon: 104.0658,
+                            city: '成都（默认）',
+                            country: '中国',
+                            success: false,
+                            source: 'timeout'
+                        };
+                    });
+
+                    centerLat = userLocation.lat;
+                    centerLng = userLocation.lon;
+                    defaultZoom = 13;
+                    locationInfo = `${userLocation.city}, ${userLocation.country}`;
+                    console.log(`使用位置: ${centerLat}, ${centerLng} (${locationInfo})`);
+                }
+
+                console.log(`地图中心: ${centerLat}, ${centerLng} (${locationInfo})`);
+
+                // 创建地图实例
+                map = L.map('map', {
+                    center: [centerLat, centerLng],
+                    zoom: defaultZoom,
+                    zoomControl: true,
+                    attributionControl: false
+                });
+
+                // 默认加载天地图
+                loadTiandituMap();
+
+                // 创建 FeatureGroup 用于存储绘制的图层
+                drawnItems = new L.FeatureGroup();
+                map.addLayer(drawnItems);
+
+                // 添加绘制控件（仅保留矩形绘制工具，不显示编辑工具栏按钮）
+                const drawControl = new L.Control.Draw({
+                    position: 'topright',
+                    draw: {
+                        polygon: false,
+                        circle: false,
+                        circlemarker: false,
+                        marker: false,
+                        polyline: false,
+                        rectangle: {
+                            shapeOptions: {
+                                color: "#ff7800",
+                                weight: 2,
+                                fillColor: "#ff7800",
+                                fillOpacity: 0.1,
+                                // 关键：设置 repeatMode 为 false，这样绘制后不会自动进入编辑模式
+                                repeatMode: false
+                            },
+                            showArea: false
+                        }
+                    },
+                    edit: false  // 完全禁用编辑工具栏按钮（edit、remove 等）
+                });
+                map.addControl(drawControl);
+
+                // 创建初始选择框（屏幕中心区域）
+                const initialBounds = map.getBounds().pad(-0.2);
+                selectionRectangle = L.rectangle(initialBounds, {
+                    color: "#ff7800",
+                    weight: 2,
+                    fillColor: "#ff7800",
+                    fillOpacity: 0.1
+                }).addTo(map);
+
+                // 将矩形添加到可编辑组
+                drawnItems.addLayer(selectionRectangle);
+
+                // 手动启用初始矩形的编辑模式（显示编辑点）
+                try {
+                    if (typeof L.Edit !== 'undefined') {
+                        const initialEditor = new L.Edit.Rectangle(selectionRectangle, {
+                            moveMarkers: true,
+                            resizeMarkers: true,
+                            maintainAspectRatio: false,
+                            draggable: true
+                        });
+                        initialEditor.enable();
+                        selectionRectangle.editor = initialEditor;
+                    }
+                } catch (editError) {
+                    console.warn('启用初始矩形编辑模式失败:', editError);
+                }
+
+                // 监听编辑事件，实时更新坐标
+                selectionRectangle.on('edit', updateCoordinates);
+                selectionRectangle.on('drag', updateCoordinates);
+
+                // 监听绘制完成事件
+                map.on(L.Draw.Event.CREATED, function (e) {
+                    // 如果已有矩形，先删除其编辑器，再删除矩形
+                    if (selectionRectangle) {
+                        // 禁用旧矩形的编辑器（移除编辑控制点）
+                        if (selectionRectangle.editor) {
+                            selectionRectangle.editor.disable();
+                            selectionRectangle.editor = null;
+                        }
+                        drawnItems.removeLayer(selectionRectangle);
+                    }
+
+                    // 添加新绘制的矩形
+                    selectionRectangle = e.layer;
+                    drawnItems.addLayer(selectionRectangle);
+
+                    // 手动启用编辑模式（显示编辑点，但不添加工具栏按钮）
+                    try {
+                        // 使用 Leaflet.Draw 的编辑功能
+                        if (typeof L.Edit !== 'undefined') {
+                            const editor = new L.Edit.Rectangle(selectionRectangle, {
+                                moveMarkers: true,
+                                resizeMarkers: true,
+                                maintainAspectRatio: false,
+                                draggable: true
+                            });
+                            editor.enable();
+                            // 将编辑器引用保存到图层对象上，方便后续管理
+                            selectionRectangle.editor = editor;
+                        }
+                    } catch (editError) {
+                        console.warn('启用编辑模式失败:', editError);
+                    }
+
+                    // 监听编辑事件，实时更新坐标
+                    selectionRectangle.on('edit', updateCoordinates);
+                    selectionRectangle.on('drag', updateCoordinates);
+
+                    // 更新坐标
+                    updateCoordinates();
+                });
+
+                // 隐藏加载提示
+                document.getElementById('loading').style.display = 'none';
+
+                // 初始更新坐标
+                updateCoordinates();
+
+                console.log('地图初始化完成');
+            } catch (error) {
+                console.error('地图初始化失败:', error);
+                document.getElementById('loading').textContent = '地图加载失败，请刷新页面重试';
+                document.getElementById('loading').style.display = 'block';
+            }
+        }
+
+        // 更新坐标并通知 C#
+        function updateCoordinates() {
+            const bounds = selectionRectangle.getBounds();
+
+            const data = {
+                type: 'coordinatesUpdated',
+                mapSource: currentMapSource,
+                minLon: bounds.getWest(),
+                minLat: bounds.getSouth(),
+                maxLon: bounds.getEast(),
+                maxLat: bounds.getNorth()
+            };
+
+            // 发送消息给 C# 宿主
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage(data);
+            }
+
+            console.log('更新坐标:', data);
+        }
+
+        // 重置视图到用户位置
+        function resetView() {
+            // 重新获取用户位置或使用当前中心
+            const center = map.getCenter();
+            map.setView([center.lat, center.lng], 13);
+
+            // 删除现有矩形（先禁用编辑器）
+            if (selectionRectangle) {
+                if (selectionRectangle.editor) {
+                    selectionRectangle.editor.disable();
+                    selectionRectangle.editor = null;
+                }
+                drawnItems.removeLayer(selectionRectangle);
+            }
+
+            // 创建新的默认矩形
+            const bounds = map.getBounds().pad(-0.2);
+            selectionRectangle = L.rectangle(bounds, {
+                color: "#ff7800",
+                weight: 2,
+                fillColor: "#ff7800",
+                fillOpacity: 0.1
+            });
+
+            // 添加到地图和可编辑组
+            selectionRectangle.addTo(map);
+            drawnItems.addLayer(selectionRectangle);
+
+            // 手动启用编辑模式（显示编辑点）
+            try {
+                if (typeof L.Edit !== 'undefined') {
+                    const resetEditor = new L.Edit.Rectangle(selectionRectangle, {
+                        moveMarkers: true,
+                        resizeMarkers: true,
+                        maintainAspectRatio: false,
+                        draggable: true
+                    });
+                    resetEditor.enable();
+                    selectionRectangle.editor = resetEditor;
+                }
+            } catch (editError) {
+                console.warn('启用重置矩形编辑模式失败:', editError);
+            }
+
+            // 监听编辑事件
+            selectionRectangle.on('edit', updateCoordinates);
+            selectionRectangle.on('drag', updateCoordinates);
+
+            updateCoordinates();
+
+            console.log('视图已重置');
+        }
+
+        // 监听来自 C# 的消息
+        if (window.chrome && window.chrome.webview) {
+            window.chrome.webview.addEventListener('message', function(event) {
+                const message = event.data;
+                console.log('收到 C# 消息:', message);
+
+                if (message === 'resetView') {
+                    resetView();
+                } else if (typeof message === 'string' && message.startsWith('search:')) {
+                    // C# 发送搜索请求：search:天津站
+                    const query = message.substring(7);
+                    document.getElementById('search-input').value = query;
+                    searchLocation(query);
+                }
+            });
+        }
+
+        // 天地图地理编码搜索（通过 C# 代理，绕过 WebView2 origin 限制）
+        function searchLocation(query) {
+            const input = document.getElementById('search-input');
+            const btn = document.getElementById('search-btn');
+
+            if (!query) {
+                query = input.value.trim();
+            }
+            if (!query) {
+                console.log('搜索关键词为空');
+                return;
+            }
+
+            // 禁用搜索按钮，显示加载状态
+            btn.disabled = true;
+            btn.textContent = '搜索中...';
+
+            // 通过 C# 代理调用天地图 geocoding API（浏览器端 Key 仅接受有合法 origin 的请求）
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: 'searchLocation',
+                    query: query
+                });
+                console.log('已发送搜索请求到 C# 代理:', query);
+            } else {
+                alert('搜索功能仅在 Revit 插件中可用');
+                btn.disabled = false;
+                btn.textContent = '搜索';
+            }
+        }
+
+        // C# 代理返回的搜索结果
+        function handleGeocodingResult(success, lat, lon, keyword, error) {
+            const btn = document.getElementById('search-btn');
+            const query = document.getElementById('search-input').value.trim();
+
+            if (success && lat && lon) {
+                console.log(`C# 代理找到位置: ${keyword} (${lat}, ${lon})`);
+
+                // 设置地图中心到搜索结果
+                map.setView([lat, lon], 16);
+
+                // 添加搜索结果标记
+                if (window._searchMarker) {
+                    map.removeLayer(window._searchMarker);
+                }
+                window._searchMarker = L.marker([lat, lon])
+                    .addTo(map)
+                    .bindPopup(`<b>${keyword}</b><br>(${lat.toFixed(6)}, ${lon.toFixed(6)})`)
+                    .openPopup();
+
+                // 自动调整矩形选择框到搜索结果附近
+                fitRectangleToSearchResult(lat, lon, 16);
+            } else {
+                console.warn('C# 代理搜索失败:', error || '未知错误');
+                alert(`未找到位置: ${query}\n${error || '请尝试更详细的位置名称。'}`);
+            }
+
+            btn.disabled = false;
+            btn.textContent = '搜索';
+        }
+
+        // 根据搜索结果调整矩形选择框
+        function fitRectangleToSearchResult(lat, lon, zoom) {
+            // 删除现有矩形
+            if (selectionRectangle) {
+                if (selectionRectangle.editor) {
+                    selectionRectangle.editor.disable();
+                    selectionRectangle.editor = null;
+                }
+                drawnItems.removeLayer(selectionRectangle);
+            }
+
+            // 根据缩放级别计算合适的矩形大小（约 500m-2km 范围）
+            const rangeMap = { 14: 0.005, 15: 0.003, 16: 0.002, 17: 0.001, 18: 0.0005 };
+            const range = rangeMap[zoom] || 0.008;
+
+            const bounds = [
+                [lat - range, lon - range],
+                [lat + range, lon + range]
+            ];
+
+            selectionRectangle = L.rectangle(bounds, {
+                color: '#ff7800',
+                weight: 2,
+                fillColor: '#ff7800',
+                fillOpacity: 0.1
+            });
+
+            selectionRectangle.addTo(map);
+            drawnItems.addLayer(selectionRectangle);
+
+            // 启用编辑模式
+            try {
+                if (typeof L.Edit !== 'undefined') {
+                    const editor = new L.Edit.Rectangle(selectionRectangle, {
+                        moveMarkers: true,
+                        resizeMarkers: true,
+                        maintainAspectRatio: false,
+                        draggable: true
+                    });
+                    editor.enable();
+                    selectionRectangle.editor = editor;
+                }
+            } catch (editError) {
+                console.warn('启用编辑模式失败:', editError);
+            }
+
+            // 监听编辑事件
+            selectionRectangle.on('edit', updateCoordinates);
+            selectionRectangle.on('drag', updateCoordinates);
+
+            updateCoordinates();
+        }
+
+        // 通知 C# 层
+        function notifyCSharp(type, data) {
+            if (window.chrome && window.chrome.webview) {
+                window.chrome.webview.postMessage({
+                    type: type,
+                    ...data
+                });
+            }
+        }
+
+        // 页面加载完成后初始化地图
+        window.addEventListener('load', () => {
+            initMap().catch(error => {
+                console.error('地图初始化失败:', error);
+                document.getElementById('loading').textContent = '地图加载失败，请刷新页面重试';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-09 - Revit 2027 Hybrid Test Package
+
+- Added `releases/2027-test/RevitAI-Hybrid-Setup-5.0.0.exe`.
+- Added rebuilt Revit 2027 120-tool source set under `rebuilt-120-tools/`.
+- Added hybrid worktree under `worktree/`, including the Revit AI WebView2 UI, PDF/CAD extensions, packaging script, and embedded Codex bridge.
+- Codex bridge now starts automatically with the Revit AI UI and writes `%LOCALAPPDATA%\RevitAi\codex-bridge.json`.
+- This release is a test build, not a formal production release.
+
 ## 2.1.0 - 2026-09-20
 
 - Expanded the typed bridge catalog from 47 to 48 tools.
